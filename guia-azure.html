@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Estudio: Despliegue de Django en Azure</title>
+    <style>
+        :root {
+            --primary-color: #0078d4;
+            --secondary-color: #2b88d8;
+            --bg-color: #f3f2f1;
+            --text-color: #323130;
+            --code-bg: #282c34;
+            --code-text: #abb2bf;
+            --accent-color: #107c10;
+            --warning-color: #d83b01;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-top: 30px;
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 10px;
+        }
+
+        h3 {
+            color: #444;
+            margin-top: 20px;
+        }
+
+        p, li {
+            margin-bottom: 10px;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 4px;
+            color: #d63384;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .alert {
+            background-color: #fff4ce;
+            border-left: 5px solid var(--warning-color);
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .step {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            width: 25px;
+            height: 25px;
+            text-align: center;
+            line-height: 25px;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Guía de Estudio: Despliegue de Django en Azure</h1>
+    <p>Esta guía está personalizada para tu proyecto <strong>miproyecto</strong> y tu aplicación <strong>vistas</strong>.</p>
+
+    <h2>FASE 1: Creación y Configuración Local</h2>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Preparación del Entorno Virtual</h3>
+        <p>Lo primero es crear un espacio aislado para trabajar.</p>
+        <ol>
+            <li>Crea una carpeta nueva para tu proyecto (ya estás en ella).</li>
+            <li>Abre la terminal dentro de esa carpeta. <strong>Recomendación:</strong> Usa PowerShell o CMD.</li>
+            <li><strong>Crear el entorno:</strong> Ejecuta el comando:
+                <pre><code>python -m venv venv</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+            </li>
+            <li><strong>Activar el entorno:</strong>
+                <p>Este paso suele dar error en Windows si tienes las políticas restringidas.</p>
+                <p>Opción A (CMD/PowerShell):</p>
+                <pre><code>venv\Scripts\activate</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+            </li>
+        </ol>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Instalación de Django</h3>
+        <p>Con el entorno activo <code>(venv)</code>:</p>
+        <ol>
+            <li><strong>Instalar:</strong>
+                <pre><code>pip install django</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+            </li>
+            <li><strong>Verificar instalación:</strong>
+                <pre><code>pip freeze</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+            </li>
+            <li><strong>Abrir el editor:</strong>
+                <pre><code>code .</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+            </li>
+        </ol>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Iniciar el Proyecto y la Aplicación</h3>
+        <ol>
+            <li><strong>Crear Proyecto:</strong> (No olvides el punto <code>.</code> al final).
+                <pre><code>django-admin startproject miproyecto .</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+            </li>
+            <li><strong>Crear Aplicación:</strong>
+                <pre><code>python manage.py startapp vistas</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+            </li>
+            <li><strong>Registrar la App:</strong>
+                <p>Ve a <code>miproyecto/settings.py</code>.</p>
+                <p>Busca <code>INSTALLED_APPS</code>.</p>
+                <p>Agrega tu app al final:</p>
+                <pre><code>INSTALLED_APPS = [
+    # ... otras apps ...
+    'vistas',
+]</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+            </li>
+            <li><strong>Probar el servidor:</strong>
+                <pre><code>python manage.py runserver</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+                <p>Si arranca y te da una URL (http://127.0.0.1:8000/), funciona. Detenlo con <strong>Ctrl + C</strong>.</p>
+            </li>
+        </ol>
+    </div>
+
+    <h2>FASE 2: Rutas (URLs), Vistas y Plantillas</h2>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Configuración de URLs</h3>
+        <p><strong>En <code>miproyecto/urls.py</code> (Archivo principal):</strong></p>
+        <p>Agrega <code>include</code> y la ruta.</p>
+        <pre><code>from django.contrib import admin
+from django.urls import path, include 
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('vistas.urls')), 
+]</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+
+        <p><strong>En <code>vistas/urls.py</code> (Archivo de la app):</strong></p>
+        <p>Crea este archivo nuevo dentro de la carpeta <code>vistas</code>.</p>
+        <pre><code>from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("saludo/", views.saludo),
+    path("petro/", views.petro, name="principal"),
+    path("uribe/", views.uribe, name="secundario"),
+]</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Creación de Vistas (views.py)</h3>
+        <p>Ve a <code>vistas/views.py</code>.</p>
+        <pre><code>from django.shortcuts import render
+from django.http import HttpResponse
+
+def saludo(request):
+    return render(request, 'saludo.html')
+
+def petro(request):
+    return render(request, 'petro.html')
+
+def uribe(request):
+    return render(request, 'uribe.html')</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Plantillas (Templates)</h3>
+        <ol>
+            <li><strong>Crear carpeta:</strong> Dentro de <code>vistas</code>, crea una carpeta llamada <code>templates</code>.</li>
+            <li><strong>Archivos HTML:</strong> Dentro de <code>templates</code>, asegúrate de tener <code>petro.html</code>, <code>uribe.html</code> y <code>saludo.html</code>.</li>
+        </ol>
+        <p><strong>Ejemplo en <code>petro.html</code>:</strong></p>
+        <pre><code>&lt;h1&gt;Pagina Petro&lt;/h1&gt;
+&lt;a href="{% url 'secundario' %}"&gt;IR A URIBE&lt;/a&gt;</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+
+        <p><strong>Ejemplo en <code>uribe.html</code>:</strong></p>
+        <pre><code>&lt;h1&gt;Pagina Uribe&lt;/h1&gt;
+&lt;a href="{% url 'principal' %}"&gt;IR A PETRO&lt;/a&gt;</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+    </div>
+
+    <h2>FASE 3: Preparación para Producción (Azure)</h2>
+    <div class="alert">
+        <strong>¡Atención!</strong> Aquí es donde suelen ocurrir los errores en Windows al subir a la nube. Sigue los pasos exactos.
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Instalación de Librerías</h3>
+        <p>En la terminal (con <code>(venv)</code> activo):</p>
+        <pre><code>pip install python-dotenv whitenoise</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Crear archivo .env</h3>
+        <p>Crea un archivo llamado <code>.env</code> (sin nombre, solo extensión .env) junto a <code>manage.py</code>.</p>
+        <pre><code># No uses comillas ni espacios extraños
+DOMINIO=https://tu-sitio-en-azure.azurewebsites.net
+SECRET_KEY=pega-aqui-tu-clave-secreta-original</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Configurar settings.py</h3>
+        <p>Ve a <code>miproyecto/settings.py</code> y modifica lo siguiente:</p>
+        
+        <p><strong>A. Importaciones (Inicio del archivo):</strong></p>
+        <pre><code>import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+
+        <p><strong>B. Seguridad (Busca SECRET_KEY):</strong></p>
+        <pre><code>SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = True  # Ojo: En producción real esto debería ser False, pero para el parcial déjalo en True si te da errores.
+ALLOWED_HOSTS = ['*'] # El asterisco permite todo. Es lo más seguro para que no falle en el examen.
+CSRF_TRUSTED_ORIGINS = ['https://' + os.getenv("DOMINIO", "localhost")]</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+
+        <p><strong>C. Middleware (Busca MIDDLEWARE):</strong></p>
+        <p>Agrega Whitenoise justo después de SecurityMiddleware. El orden importa.</p>
+        <pre><code>MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # <--- AQUÍ
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # ... los demás ...
+]</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+
+        <p><strong>D. Archivos Estáticos (Final del archivo):</strong></p>
+        <p>Esto suele fallar en Windows si las rutas están mal. Usa esta configuración exacta:</p>
+        <pre><code>STATIC_URL = 'static/'
+
+# Esto une la ruta base con la carpeta staticfiles de forma segura para Windows/Linux
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">4</span>Generar Archivos Finales</h3>
+        <p><strong>Migraciones:</strong> (Obligatorio para que no salga error rojo en Azure).</p>
+        <pre><code>python manage.py migrate</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+
+        <p><strong>Requirements.txt:</strong></p>
+        <pre><code>pip freeze > requirements.txt</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+        
+        <div class="alert">
+            <strong>CORRECCIÓN WINDOWS:</strong> Abre el archivo <code>requirements.txt</code> que se acaba de crear.
+            <ul>
+                <li>Si ves una línea que dice <code>pkg-resources==0.0.0</code>, <strong>BÓRRALA</strong>.</li>
+                <li>Si ves líneas con rutas de tu disco duro (ej: <code>C:\Users\Juan\...</code>), <strong>BÓRRALAS</strong>.</li>
+                <li>Solo deja las librerías limpias (Django, whitenoise, etc).</li>
+            </ul>
+        </div>
+
+        <p><strong>.gitignore:</strong> Crea un archivo <code>.gitignore</code> y escribe:</p>
+        <pre><code>.env
+/venv
+/media
+db.sqlite3
+__pycache__/
+*.pyc</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+    </div>
+
+    <h2>FASE 4: GitHub y Despliegue en Azure</h2>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Subir a GitHub</h3>
+        <p>Crea repositorio vacío en GitHub.</p>
+        <p>En tu terminal:</p>
+        <pre><code>git init
+git add .
+git commit -m "Configuracion lista"
+git branch -M main
+# Copia el comando de 'git remote' que te da GitHub
+git remote add origin https://github.com/TU_USUARIO/TU_REPO.git
+git push -u origin main</code><button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button></pre>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Configurar en Azure</h3>
+        <ul>
+            <li><strong>Crear Web App:</strong>
+                <ul>
+                    <li>Python 3.11 o superior (que coincida con el tuyo).</li>
+                    <li>Plan Free F1.</li>
+                </ul>
+            </li>
+            <li><strong>Variables de Entorno (Configuration):</strong>
+                <ul>
+                    <li>Agrega <code>SECRET_KEY</code> y <code>DOMINIO</code> (sin el https:// al principio en el valor del dominio si usas el código de settings que te di arriba, o ajústalo según necesites. Lo más fácil es poner la URL completa en el .env y en Azure).</li>
+                </ul>
+            </li>
+            <li><strong>Deployment Center:</strong>
+                <ul>
+                    <li>Conecta con GitHub.</li>
+                    <li>Build Provider: App Service Build Service.</li>
+                    <li>Guarda.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Verificar</h3>
+        <p>Espera unos 2-5 minutos. Ve a "Información General" y entra al enlace.</p>
+        <p><strong>¿Sigue saliendo error?</strong></p>
+        <ol>
+            <li>Ve a <strong>App Service Logs</strong> en el menú izquierdo de Azure.</li>
+            <li>Activa <strong>"Application Logging"</strong>.</li>
+            <li>Ve a <strong>Log Stream</strong>. Ahí te dirá exactamente por qué falló (casi siempre es una variable de entorno mal escrita o un error en el requirements.txt).</li>
+        </ol>
+    </div>
+
+</div>
+
+<script>
+    function copyToClipboard(button) {
+        const pre = button.parentElement;
+        const code = pre.querySelector('code');
+        const text = code.innerText;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            const originalText = button.innerText;
+            button.innerText = '¡Copiado!';
+            setTimeout(() => {
+                button.innerText = originalText;
+            }, 2000);
+        }).catch(err => {
+            console.error('Error al copiar: ', err);
+        });
+    }
+</script>
+
+</body>
+</html>

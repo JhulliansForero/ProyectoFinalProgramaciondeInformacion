@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+</head>
+    <style>
+        body{
+            background-color: aqua;
+        }
+
+        h1{
+            text-align: center;
+        }
+
+        .contenedor{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: blue;
+        }
+
+        .formulario{
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .m-bottom{
+            margin-bottom: 10px;
+        }
+        
+    </style>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>Editar Usuario</h1>
+    
+        <form class="formulario" method="post">
+        {% csrf_token %}
+            <label for="usuario">Nombre de usuario:</label>
+            <input type="text" class="m-bottom" id="usuario" name="username" value="{{ usuario.username }}" required>
+        
+            <label for="password">Contraseña:</label>
+            <input type="password" class="m-bottom" id="password" name="password" value="{{ usuario.password }}" required>
+        
+            <label for="imagen_url">URL de imagen:</label>
+            <input type="url" class="m-bottom" id="imagen_url" name="imagen_url" value="{{ usuario.imagen_url }}" placeholder="https://ejemplo.com/imagen.jpg">
+    
+            <button type="submit">Guardar Cambios</button>
+        </form>
+
+        <br>
+        <a href="{% url 'lista_usuarios' %}" style="color: white;">Volver a la lista</a>
+
+    </div>    
+
+</body>
+</html>
