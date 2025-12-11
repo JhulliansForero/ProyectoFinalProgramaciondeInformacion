@@ -3,6 +3,27 @@ from django.http import HttpResponse
 from .models import Practica  # Importamos el modelo Practica de la base de datos
 
 
+#---------------------------------------------------
+# VISTA DE INICIO (PÁGINA PÚBLICA)
+#---------------------------------------------------
+def inicio(request):
+    return render(request, 'inicio.html')
+
+
+#---------------------------------------------------
+# VISTA PRIVADA (DASHBOARD - después de login)
+#---------------------------------------------------
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+
+#---------------------------------------------------
+# VISTA DE PERFIL
+#---------------------------------------------------
+def perfil(request):
+    return render(request, 'perfil.html')
+
+
 def saludo(request):
     return render(request, 'saludo.html')
 
@@ -22,18 +43,18 @@ def login(request):
     # Verificamos si el formulario fue enviado (método POST)
     if request.method == "POST":
         # Obtenemos los datos del formulario
-        username = request.POST.get("username")  # Obtiene el valor del campo "username"
-        password = request.POST.get("password")  # Obtiene el valor del campo "password"
+        email = request.POST.get("username")  # Obtiene el valor del campo email
+        password = request.POST.get("password")  # Obtiene el valor del campo password
         
-        # Verificamos si el usuario existe en la base de datos
-        if Practica.objects.filter(username=username).exists():
+        # Verificamos si el usuario existe en la base de datos (buscando por email)
+        if Practica.objects.filter(email=email).exists():
             # Si existe, lo obtenemos
-            usuario = Practica.objects.get(username=username)
+            usuario = Practica.objects.get(email=email)
             
             # Verificamos si la contraseña es correcta
             if usuario.password == password:
-                # Si es correcta, redirigimos a la lista de usuarios
-                return redirect("lista_usuarios")
+                # Si es correcta, redirigimos al dashboard (vista privada)
+                return redirect("dashboard")
             else:
                 # Si la contraseña es incorrecta, mostramos error
                 error = "La contraseña es incorrecta"
@@ -61,30 +82,24 @@ def formulario(request):
     if request.method == "POST":
         # Obtenemos los datos del formulario
         usern = request.POST.get("username")      # Nombre de usuario
-        passw1 = request.POST.get("password1")    # Contraseña
-        passw2 = request.POST.get("password2")    # Confirmar contraseña
-        imagen_url = request.POST.get("imagen_url")  # URL de la imagen
+        email = request.POST.get("email")          # Email
+        passw = request.POST.get("password")       # Contraseña
 
         # Verificamos si el usuario ya existe
         if Practica.objects.filter(username=usern).exists():
             sms = "El nombre de usuario ya existe"
-            sms2 = "Segundo mensaje"
-            
             info = {
-                  'infosms': sms,
-                  'infosms2': sms2
+                  'infosms': sms
             }
             return render(request, "formulario.html", info)
         
-        # Verificamos que las contraseñas coincidan
-        if passw1 == passw2:
-            # Guardamos el nuevo usuario en la base de datos
-            Practica.objects.create(
-                username=usern,
-                password=passw2,
-                imagen_url=imagen_url if imagen_url else None  # Si no hay imagen, guardamos None
-            )
-            return redirect("login")  # Redirigimos al login
+        # Guardamos el nuevo usuario en la base de datos
+        Practica.objects.create(
+            username=usern,
+            email=email,
+            password=passw
+        )
+        return redirect("login")  # Redirigimos al login
     
     # Si no es POST, mostramos el formulario vacío
     return render(request, "formulario.html")
@@ -129,13 +144,13 @@ def editar_usuario(request, usuario_id):
     if request.method == "POST":
         # Obtenemos los datos del formulario
         nuevo_username = request.POST.get("username")
+        nuevo_email = request.POST.get("email")
         nueva_password = request.POST.get("password")
-        nueva_imagen = request.POST.get("imagen_url")
         
         # Actualizamos los datos del usuario
         usuario.username = nuevo_username
+        usuario.email = nuevo_email
         usuario.password = nueva_password
-        usuario.imagen_url = nueva_imagen if nueva_imagen else None
         
         # Guardamos los cambios en la base de datos
         usuario.save()

@@ -1,64 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Usuario</title>
-</head>
+    <title>Editar Usuario - BookMora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        body{
-            background-color: aqua;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        h1{
-            text-align: center;
-        }
-
-        .contenedor{
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: blue;
+            justify-content: center;
+            padding: 40px 20px;
         }
 
-        .formulario{
-            margin: 10px;
+        .contenedor {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #7ec8e3;
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .formulario {
             display: flex;
             flex-direction: column;
         }
 
-        .m-bottom{
-            margin-bottom: 10px;
+        .campo-grupo {
+            margin-bottom: 20px;
         }
-        
-    </style>
 
+        .campo-grupo label {
+            display: block;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .campo-grupo input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .campo-grupo input:focus {
+            outline: none;
+            border-color: #7ec8e3;
+        }
+
+        .btn-guardar {
+            width: 100%;
+            padding: 15px;
+            background: #7ec8e3;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-guardar:hover {
+            background: #5fb4d3;
+        }
+
+        .link-volver {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #7ec8e3;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .link-volver:hover {
+            color: #5fb4d3;
+        }
+    </style>
+</head>
 <body>
 
     <div class="contenedor">
+        <h1>🐦 Editar Usuario</h1>
 
-        <h1>Editar Usuario</h1>
-    
         <form class="formulario" method="post">
-        {% csrf_token %}
-            <label for="usuario">Nombre de usuario:</label>
-            <input type="text" class="m-bottom" id="usuario" name="username" value="{{ usuario.username }}" required>
-        
-            <label for="password">Contraseña:</label>
-            <input type="password" class="m-bottom" id="password" name="password" value="{{ usuario.password }}" required>
-        
-            <label for="imagen_url">URL de imagen:</label>
-            <input type="url" class="m-bottom" id="imagen_url" name="imagen_url" value="{{ usuario.imagen_url }}" placeholder="https://ejemplo.com/imagen.jpg">
-    
-            <button type="submit">Guardar Cambios</button>
+            {% csrf_token %}
+
+            <div class="campo-grupo">
+                <label for="username">Nombre de usuario:</label>
+                <input type="text" id="username" name="username" value="{{ usuario.username }}" required>
+            </div>
+
+            <div class="campo-grupo">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ usuario.email }}" required>
+            </div>
+
+            <div class="campo-grupo">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" value="{{ usuario.password }}" required>
+            </div>
+
+            <button type="submit" class="btn-guardar">Guardar Cambios</button>
         </form>
 
-        <br>
-        <a href="{% url 'lista_usuarios' %}" style="color: white;">Volver a la lista</a>
-
-    </div>    
+        <a href="{% url 'lista_usuarios' %}" class="link-volver">← Volver a la lista</a>
+    </div>
 
 </body>
 </html>

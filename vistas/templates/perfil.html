@@ -1,0 +1,341 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - BookMora</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Poppins:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: #fff; }
+
+        /* =========================================
+           HEADER (Azul Oscuro Profundo)
+           ========================================= */
+        .header-filas {
+            background-color: #08042b; /* Azul muy oscuro casi negro */
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+            width: auto;
+            margin-right: 20px;
+        }
+        .logo-area img { /* width managed inline */ }
+        .logo-area span {
+            color: #5ba4cf;
+            font-family: 'Playfair Display', serif;
+            font-size: 10px;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        /* Buscador CENTRADO */
+        .search-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        .search-box {
+            background-color: #f2f2f2;
+            width: 400px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            border-radius: 2px;
+        }
+        .search-box span { font-size: 14px; color: #555; margin-right: 8px; }
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 13px;
+            width: 100%;
+            color: #333;
+        }
+
+        /* Nav DERECHA */
+        .nav-area {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 150px; /* Igual que logo para centrar buscador perfectamente */
+            gap: 20px;
+        }
+        .nav-area a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+        }
+        .nav-avatar img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid #5ba4cf;
+        }
+
+        /* =========================================
+           SECCIÓN PERFIL (Azul Cielo Claro)
+           ========================================= */
+        .profile-hero {
+            background-color: #aedefc; /* Azul cielo exacto de la imagen */
+            position: relative;
+            height: 160px; /* Altura para contener stats y avatar */
+            display: flex;
+            justify-content: center; /* Para centrar avatar */
+            border-bottom: 1px solid #9bcceb;
+        }
+
+        /* Stats a la IZQUIERDA absoluta */
+        .stats-left {
+            position: absolute;
+            left: 50px;
+            top: 20px;
+            display: flex;
+            gap: 40px;
+        }
+        .stat-group {
+            text-align: center;
+            color: #333; /* Texto oscuro sobre fondo claro */
+        }
+        .stat-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            margin-top: 2px;
+        }
+
+        /* Avatar CENTRADO */
+        .avatar-center-wrapper {
+            margin-top: 15px;
+            text-align: center;
+            z-index: 10;
+        }
+        .big-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #1a2e5a; /* Borde oscuro del avatar */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .username-hero {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: #000;
+            margin-top: 5px;
+        }
+
+        /* =========================================
+           BARRA "OBRAS" (Azul Grisáceo Pálido)
+           ========================================= */
+        .obras-bar {
+            background-color: #dbebf9; /* Azul pálido barra intermedia */
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+        .obras-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: #000;
+            font-weight: 400;
+        }
+        .edit-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .edit-profile-btn span {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: #333;
+        }
+        .ico-gear { font-size: 18px; }
+
+        /* =========================================
+           LISTA DE OBRAS (Blanco)
+           ========================================= */
+        .content-area {
+            background-color: #fff;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .book-card {
+            width: 700px;
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .book-cover {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            margin-right: 25px;
+        }
+        .book-info {
+            flex: 1;
+            padding-top: 10px;
+        }
+        .book-title {
+            font-family: 'Poppins', sans-serif; /* Usando poppins para titulo según imagen */
+            font-weight: 600;
+            font-size: 15px;
+            color: #222;
+            margin-bottom: 5px;
+        }
+        .book-meta {
+            font-size: 12px;
+            color: #444;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .book-tags {
+            display: flex;
+            gap: 10px;
+        }
+        .tag-pill {
+            background-color: #f0f0f0;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-family: 'Playfair Display', serif; /* Tags estilo serif en imagen */
+            color: #333;
+        }
+        .card-actions {
+            position: absolute;
+            right: 0;
+            top: 10px;
+            display: flex;
+            gap: 15px;
+        }
+        .action-icon {
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header-filas">
+        <div class="logo-area">
+            <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
+        </div>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <img src="{% static 'images/icono_busqueda.png' %}" alt="Buscar" style="width: 18px; margin-right: 8px;">
+                <input type="text" placeholder="Busca">
+            </div>
+        </div>
+
+        <nav class="nav-area">
+            <a href="#">Publicar</a>
+            <a href="{% url 'perfil' %}">Mi Perfil</a>
+            <div class="nav-avatar">
+                <a href="#"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sección Perfil Azul Celeste -->
+    <section class="profile-hero">
+        <!-- Stats Izquierda -->
+        <div class="stats-left">
+            <div class="stat-group">
+                <div class="stat-label">Obras</div>
+                <div class="stat-value">2</div>
+            </div>
+            <div class="stat-group">
+                <div class="stat-label">Lista de Lectura</div>
+                <div class="stat-value">5</div>
+            </div>
+        </div>
+
+        <!-- Avatar Centro -->
+        <div class="avatar-center-wrapper">
+            <img src="{% static 'images/avatar_grande.png' %}" class="big-avatar" alt="Avatar">
+            <div class="username-hero">Usuariol</div>
+        </div>
+    </section>
+
+    <!-- Barra Obras -->
+    <div class="obras-bar">
+        <h2 class="obras-title">Obras</h2>
+        <div class="edit-profile-btn">
+            <!-- Icono engranaje imagen estatica o font -->
+            <img src="{% static 'images/icono_config.png' %}" style="width:20px;" alt="Config">
+            <span>Edita tu Perfil</span>
+        </div>
+    </div>
+
+    <!-- Lista Libros -->
+    <div class="content-area">
+        <!-- Libro 1 -->
+        <div class="book-card">
+            <img src="{% static 'images/libro_jardin.png' %}" class="book-cover">
+            <div class="book-info">
+                <h3 class="book-title">Los Secretos del Jardín Olvidado</h3>
+                <div class="book-meta">
+                    <b>=</b> 3
+                </div>
+                <div class="book-tags">
+                    <span class="tag-pill">Amor</span>
+                    <span class="tag-pill">Fantasía</span>
+                    <span class="tag-pill">Secretos</span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <img src="{% static 'images/icono_editar.png' %}" style="width:20px;" alt="Edit">
+                <img src="{% static 'images/icono_eliminar.png' %}" style="width:16px;" alt="Delete">
+            </div>
+        </div>
+
+        <!-- Libro 2 -->
+        <div class="book-card">
+            <img src="{% static 'images/libro_casa.png' %}" class="book-cover">
+            <div class="book-info">
+                <h3 class="book-title">La Casa Vacía</h3>
+                <div class="book-meta">
+                    <b>=</b> 5
+                </div>
+                <div class="book-tags">
+                    <span class="tag-pill">Terror</span>
+                    <span class="tag-pill">Soleda</span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <img src="{% static 'images/icono_editar.png' %}" style="width:20px;" alt="Edit">
+                <img src="{% static 'images/icono_eliminar.png' %}" style="width:16px;" alt="Delete">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

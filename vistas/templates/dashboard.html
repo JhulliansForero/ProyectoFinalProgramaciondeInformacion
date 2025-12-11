@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookMora - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #ffffff;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-header img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-header span {
+            color: #7ec8e3;
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-style: italic;
+        }
+
+        .buscador {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .buscador input {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        .buscador span {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .nav-header {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-header a {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-header a:hover {
+            color: #7ec8e3;
+        }
+
+        .avatar-usuario {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #130A3D;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 60px 40px;
+        }
+
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .hero-image img {
+            width: 350px;
+        }
+
+        /* Sección Popular */
+        .seccion {
+            padding: 40px;
+        }
+
+        .seccion h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .portadas-img {
+            text-align: center;
+        }
+
+        .portadas-img img {
+            max-width: 100%;
+            width: 900px;
+        }
+
+        /* Sección Categorías */
+        .categorias-img {
+            text-align: center;
+        }
+
+        .categorias-img img {
+            max-width: 100%;
+            width: 700px;
+        }
+
+        /* Sección Fandom */
+        .fandom {
+            padding: 60px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: #fff;
+        }
+
+        .fandom-image img {
+            width: 400px;
+        }
+
+        .fandom-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: #333;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header (Vista Privada - con avatar) -->
+    <header class="header">
+        <div class="logo-header">
+            <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
+            <span>BookMora</span>
+        </div>
+
+        <div class="buscador">
+            <input type="text" placeholder="Buscar">
+            <span>Genero</span>
+        </div>
+
+        <nav class="nav-header">
+            <a href="#">Escribir ▾</a>
+            <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_usuario.png' %}" alt="Perfil" class="avatar-usuario"></a>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Conecta con el autor.<br>Vive la historia.</h1>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'images/libros_flores.png' %}" alt="Libros">
+        </div>
+    </section>
+
+    <!-- Lo más Popular -->
+    <section class="seccion">
+        <h2>Lo mas Popular</h2>
+        <div class="portadas-img">
+            <img src="{% static 'images/portadas_libros.png' %}" alt="Libros Populares">
+        </div>
+    </section>
+
+    <!-- Diversidad de Historias -->
+    <section class="seccion">
+        <h2>Diversidad De Historias.</h2>
+        <div class="categorias-img">
+            <img src="{% static 'images/categorias.png' %}" alt="Categorías">
+        </div>
+    </section>
+
+    <!-- Fandom -->
+    <section class="fandom">
+        <div class="fandom-image">
+            <img src="{% static 'images/personas_leyendo.png' %}" alt="Personas leyendo">
+        </div>
+        <div class="fandom-text">
+            <h2>El fandom<br>comienza en el<br>primer capítulo.</h2>
+        </div>
+    </section>
+
+</body>
+</html>

@@ -1,78 +1,194 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
+    <title>Iniciar Sesión - BookMora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        body{
-            background-color: aqua;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        h1{
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .lado-izquierdo {
+            width: 50%;
+            background: #130A3D;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .logo-izq {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-izq img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-izq span {
+            color: #7ec8e3;
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .nav-links {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: right;
+        }
+
+        .nav-links a {
+            color: #7ec8e3;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .imagen-libros img {
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .lado-derecho {
+            width: 50%;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .logo-principal {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-principal img {
+            width: 200px;
+        }
+
+        .formulario {
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .campo-grupo {
+            margin-bottom: 25px;
+        }
+
+        .campo-grupo input {
+            width: 100%;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            background: transparent;
+        }
+
+        .campo-grupo input::placeholder {
+            color: #999;
+        }
+
+        .campo-grupo input:focus {
+            outline: none;
+            border-bottom-color: #7ec8e3;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: #333;
+            font-size: 15px;
+            font-family: 'Playfair Display', serif;
+            cursor: pointer;
+            margin-top: 20px;
             text-align: center;
         }
 
-        .contenedor{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: blue;
+        .mensaje-error {
+            background: #ffe6e6;
+            border-left: 4px solid #ff4d4d;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #b30000;
+            font-size: 12px;
         }
-
-        .formulario{
-            margin: 10px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .m-bottom{
-            margin-bottom: 10px;
-        }
-        
     </style>
-
+</head>
 <body>
 
-    <div class="contenedor">
+    <!-- Lado Izquierdo -->
+    <div class="lado-izquierdo">
+        <div class="logo-izq">
+            <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
+            <span>BookMora</span>
+        </div>
 
-        <h1>Iniciar Sesión</h1>
+        <div class="nav-links">
+            <a href="{% url 'login' %}">Iniciar Sesión</a>
+            <a href="{% url 'formulario' %}">Registrate</a>
+        </div>
+
+        <div class="imagen-libros">
+            <img src="{% static 'images/libros.png' %}" alt="libros">
+        </div>
+    </div>
+
+    <!-- Lado Derecho -->
+    <div class="lado-derecho">
+        <div class="logo-principal">
+            <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
+        </div>
 
         {% if error %}
-            <div style="
-                background: #ffe6e6;
-                border-left: 5px solid #ff4d4d;
-                padding: 12px 18px;
-                margin-bottom: 20px;
-                border-radius: 5px;
-                font-family: Arial, sans-serif;
-            ">
-                <p style="
-                    color: #b30000;
-                    font-weight: bold;
-                    margin: 0;
-                    font-size: 15px;
-                ">
-                    {{ error }}
-                </p>
+            <div class="mensaje-error">
+                {{ error }}
             </div>
         {% endif %}
-    
-        <form class="formulario" method="post">
-        {% csrf_token %}
-            <label for="usuario">Nombre de usuario:</label>
-            <input type="text" class="m-bottom" id="usuario" name="username" required>
-        
-            <label for="password">Contraseña:</label>
-            <input type="password" class="m-bottom" id="password" name="password" required>
-    
-            <button type="submit">Iniciar Sesión</button>
-        </form>
 
-    </div>    
+        <form class="formulario" method="post">
+            {% csrf_token %}
+
+            <div class="campo-grupo">
+                <input type="email" name="username" placeholder="Email" required>
+            </div>
+
+            <div class="campo-grupo">
+                <input type="password" name="password" placeholder="Contraseña" required>
+            </div>
+
+            <button type="submit" class="btn-login">Iniciar Seccion</button>
+        </form>
+    </div>
 
 </body>
 </html>

@@ -1,108 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Usuarios</title>
-</head>
+    <title>Lista de Usuarios - BookMora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        body{
-            background-color: aqua;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        h1{
-            text-align: center;
-            color: white;
-        }
-
-        .contenedor{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        body {
+            font-family: 'Poppins', sans-serif;
             min-height: 100vh;
-            background-color: blue;
-            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 40px 20px;
         }
 
-        .usuario-card{
-            background-color: white;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 10px;
+        .contenedor {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
             text-align: center;
-            width: 250px;
+            color: #7ec8e3;
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin-bottom: 40px;
         }
 
-        .usuario-imagen{
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-
-        .btn-eliminar{
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .usuarios-lista{
+        .usuarios-lista {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            gap: 20px;
         }
 
-        .btn-actualizar{
-            background-color: green;
+        .usuario-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            width: 280px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .usuario-icono {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .usuario-card p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .usuario-card .email {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .botones {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-actualizar {
+            background-color: #7ec8e3;
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-            margin-right: 5px;
+            font-size: 14px;
+            transition: background 0.3s;
         }
-        
-    </style>
 
+        .btn-actualizar:hover {
+            background-color: #5fb4d3;
+        }
+
+        .btn-eliminar {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .btn-eliminar:hover {
+            background-color: #c0392b;
+        }
+
+        .sin-usuarios {
+            text-align: center;
+            color: #a8d8ea;
+            font-size: 18px;
+        }
+    </style>
+</head>
 <body>
 
     <div class="contenedor">
-
-        <h1>Usuarios Registrados</h1>
+        <h1>🐦 Usuarios Registrados</h1>
 
         {% if usuarios %}
             <div class="usuarios-lista">
                 {% for usuario in usuarios %}
                     <div class="usuario-card">
-                        {% if usuario.imagen_url %}
-                            <img src="{{ usuario.imagen_url }}" alt="{{ usuario.username }}" class="usuario-imagen">
-                        {% else %}
-                            <p>Sin imagen</p>
-                        {% endif %}
-                        
+                        <div class="usuario-icono">👤</div>
                         <p><strong>{{ usuario.username }}</strong></p>
+                        <p class="email">{{ usuario.email }}</p>
                         
-                        <a href="{% url 'editar_usuario' usuario.id %}" class="btn-actualizar">Actualizar</a>
-                        <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn-eliminar">Eliminar</a>
+                        <div class="botones">
+                            <a href="{% url 'editar_usuario' usuario.id %}" class="btn-actualizar">Editar</a>
+                            <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn-eliminar">Eliminar</a>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
         {% else %}
-            <p style="color: white;">No hay usuarios registrados.</p>
+            <p class="sin-usuarios">No hay usuarios registrados.</p>
         {% endif %}
-
-    </div>    
+    </div>
 
 </body>
 </html>
