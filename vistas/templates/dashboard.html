@@ -165,17 +165,18 @@
     <!-- Header (Vista Privada - con avatar) -->
     <header class="header">
         <div class="logo-header">
-            <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
-            <span>BookMora</span>
+            <a href="{% url 'dashboard' %}" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
+                <span>BookMora</span>
+            </a>
         </div>
 
         <div class="buscador">
             <input type="text" placeholder="Buscar">
-            <span>Genero</span>
         </div>
 
         <nav class="nav-header">
-            <a href="#">Escribir ▾</a>
+            <a href="{% url 'publicar' %}">Escribir ▾</a>
             <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_usuario.png' %}" alt="Perfil" class="avatar-usuario"></a>
         </nav>
     </header>

@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ obra.titulo }} - BookMora</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Poppins:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: #fff; }
+
+        /* HEADER (Copied from Perfil) */
+        .header-filas {
+            background-color: #08042b;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+        .logo-area a { display: flex; align-items: center; }
+        .nav-area {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 20px;
+        }
+        .nav-area a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+        .nav-avatar img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid #5ba4cf;
+        }
+
+        /* MAIN CONTAINER */
+        .detail-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 50px;
+        }
+
+        /* COVER */
+        .cover-area img {
+            width: 100%;
+            box-shadow: 2px 4px 15px rgba(0,0,0,0.15);
+            /* Aspect ratio approx 2:3 */
+            aspect-ratio: 2/3; 
+            object-fit: cover;
+        }
+
+        /* INFO RIGHT */
+        .info-area {
+            padding-top: 10px;
+        }
+
+        .book-title-large {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .book-meta-large {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 25px;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .meta-item { display: flex; align-items: center; gap: 5px; }
+
+        .start-reading-btn {
+            background-color: #08042b; /* Deep blue similar to header */
+            color: white;
+            padding: 12px 50px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        .start-reading-btn:hover { background-color: #1a1444; }
+
+        .author-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .mini-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #5ba4cf;
+        }
+        .author-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .tags-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .tag-pill {
+            background-color: #f0f0f0;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-family: 'Playfair Display', serif;
+            color: #333;
+        }
+
+        /* BOTTOM GRID (Description vs TOC) */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 3fr 2fr; /* More space for description */
+            gap: 50px;
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+        }
+
+        .description-box {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+        }
+
+        .toc-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #222;
+        }
+        .chapter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .chapter-item {
+            background-color: #f4f4f4;
+            padding: 15px 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            color: #333;
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header-filas">
+        <div class="logo-area">
+            <a href="{% url 'dashboard' %}">
+                <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
+            </a>
+        </div>
+        <nav class="nav-area">
+            <a href="{% url 'perfil' %}">Mi Perfil</a>
+            <div class="nav-avatar">
+                <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="detail-container">
+        <!-- Col Left: Cover -->
+        <div class="cover-area">
+            {% if obra.imagen %}
+                <img src="{{ obra.imagen.url }}" alt="Portada">
+            {% elif obra.imagen_url %}
+                <img src="{{ obra.imagen_url }}" alt="Portada">
+            {% else %}
+                <div style="width: 100%; height: 400px; background-color: #eee; display:flex; align-items:center; justify-content:center;">Sin Portada</div>
+            {% endif %}
+        </div>
+
+        <!-- Col Right: Details -->
+        <div class="info-area">
+            <h1 class="book-title-large">{{ obra.titulo }}</h1>
+            
+            <div class="book-meta-large">
+                <div class="meta-item">
+                    <span style="font-weight: bold;">☰</span>
+                    <span>Partes {{ obra.num_capitulos }}</span>
+                </div>
+                 <div class="meta-item">
+                    <!-- Placeholder reading time/stats -->
+                </div>
+            </div>
+
+            <a href="#" class="start-reading-btn">Empezar a leer</a>
+
+            <div class="author-row">
+                <img src="{% static 'images/avatar_grande.png' %}" class="mini-avatar" alt="Author">
+                <span class="author-name">{{ obra.autor.username|default:"Usuario" }}</span>
+            </div>
+
+            <div class="tags-row">
+                {% if obra.categoria %}
+                    <span class="tag-pill">{{ obra.categoria }}</span>
+                {% endif %}
+                <!-- Etiquetas logic: parse string by comma if simple -->
+                <span class="tag-pill">{{ obra.etiquetas }}</span>
+            </div>
+
+            <!-- Content Split -->
+            <div class="bottom-grid">
+                <!-- Description -->
+                <div class="description-box">
+                    {% if obra.descripcion %}
+                        {{ obra.descripcion|linebreaks }}
+                    {% else %}
+                        <p>Sin descripción.</p>
+                    {% endif %}
+                </div>
+
+                <!-- TOC -->
+                <div class="toc-box">
+                    <div class="toc-header">Tabla de Contenidos</div>
+                    <div class="chapter-list">
+                        {% for cap in capitulos %}
+                            <div class="chapter-item">
+                                Parte {{ forloop.counter }} &nbsp; {{ cap.titulo }}
+                            </div>
+                        {% empty %}
+                            <div style="color: #777;">Aún no hay partes publicadas.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabla de Contenidos - BookMora</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: #fafafa; }
+
+        .header-filas { background-color: #08042b; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+        .logo-area a { display: flex; align-items: center; }
+        .nav-area { display: flex; align-items: center; gap: 20px; }
+        .nav-area a { color: #fff; text-decoration: none; font-family: 'Playfair Display', serif; }
+        .nav-avatar img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #5ba4cf; object-fit: cover; }
+
+        .main-container { max-width: 1000px; margin: 40px auto; padding: 0 20px; display: flex; gap: 50px; }
+        .left-col { flex: 0 0 300px; }
+        .book-cover-large { width: 100%; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); }
+        .right-col { flex: 1; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn {
+            background-color: #08042b; color: #fff; padding: 10px 20px; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 14px;
+        }
+        .tab-btn.active { background-color: #08042b; }
+        .tab-btn.inactive { background-color: #0b0640; opacity: 0.7; }
+
+        .new-part-btn {
+            background-color: #000080; /* Navy blue */
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .chapter-list { display: flex; flex-direction: column; gap: 10px; }
+        .chapter-item {
+            background-color: #f2f2f2;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chapter-title {
+            color: #333;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex: 1;
+        }
+        .chapter-icon { font-size: 12px; color: #666; }
+        .delete-icon { font-size: 18px; color: #333; cursor: pointer; text-decoration: none; }
+
+        .next-btn-container { text-align: right; margin-top: 40px; }
+        .next-btn { background: none; border: none; font-family: 'Playfair Display', serif; font-size: 18px; color: #333; cursor: pointer; text-decoration:none;}
+
+    </style>
+</head>
+<body>
+
+    <header class="header-filas">
+        <div class="logo-area">
+            <a href="{% url 'dashboard' %}">
+                <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
+            </a>
+        </div>
+        <nav class="nav-area">
+            <a href="{% url 'perfil' %}">Mi Perfil</a>
+            <div class="nav-avatar">
+                <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <!-- Izquierda -->
+        <div class="left-col">
+            {% if obra.imagen %}
+                <img src="{{ obra.imagen.url }}" class="book-cover-large">
+            {% elif obra.imagen_url %}
+                 <img src="{{ obra.imagen_url }}" class="book-cover-large">
+            {% else %}
+                <img src="{% static 'images/libro_jardin.png' %}" class="book-cover-large">
+            {% endif %}
+            <div style="text-align: center; margin-top: 10px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 18px;">{{ obra.titulo }}</h3>
+            </div>
+        </div>
+
+        <!-- Derecha -->
+        <div class="right-col">
+            <!-- Tabs -->
+            <div class="tabs">
+                <a href="{% url 'editar_obra' obra.id %}" class="tab-btn inactive">Detalles de la obra</a>
+                <a href="#" class="tab-btn active">Tabla de contenidos</a>
+            </div>
+
+            <!-- Add New Part -->
+            <a href="{% url 'escribir_capitulo_nuevo' obra.id %}" class="new-part-btn">+ Parte nueva</a>
+
+            <!-- Chapter List -->
+            <div class="chapter-list">
+                {% for cap in capitulos %}
+                <div class="chapter-item">
+                    <a href="{% url 'escribir_capitulo' obra.id cap.id %}" class="chapter-title">
+                        <span class="chapter-icon">☰</span>
+                        {{ cap.titulo }}
+                    </a>
+                    <!-- Button triggers modal -->
+                    <span class="delete-icon" onclick="openModal('{% url 'eliminar_capitulo' cap.id %}')">🗑</span>
+                </div>
+                {% empty %}
+                <p>No hay partes aún.</p>
+                {% endfor %}
+            </div>
+
+            <div class="next-btn-container">
+                <a href="{% url 'perfil' %}" class="next-btn">Siguiente</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete -->
+    <div id="deleteModal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255,255,255,0.8); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background-color: #f9f9f9; padding: 40px; border-radius: 20px; width: 400px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 20px; color: #333;">Seguro que deseas eliminar<br>esta obra ?</h3> <!-- User text says "esta obra" but context is chapter, sticking to image text -->
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <button onclick="closeModal()" style="background-color: #d1d1d1; color: #333; border: none; padding: 10px 20px; border-radius: 20px; font-family: 'Playfair Display', serif; cursor: pointer;">Cancelar</button>
+                <a id="confirmDeleteBtn" href="#" style="background-color: #ff0000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-family: 'Playfair Display', serif;">Eliminar</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(deleteUrl) {
+            document.getElementById('deleteModal').style.display = 'flex';
+            document.getElementById('confirmDeleteBtn').href = deleteUrl;
+        }
+        function closeModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect  # render: muestra templates, redirect: redirige a otra URL
 from django.http import HttpResponse
-from .models import Practica  # Importamos el modelo Practica de la base de datos
+from django.db.models import Count
+from .models import Practica, Obra, Capitulo  # Importamos el modelo Practica de la base de datos
 
 
 #---------------------------------------------------
@@ -21,7 +22,18 @@ def dashboard(request):
 # VISTA DE PERFIL
 #---------------------------------------------------
 def perfil(request):
-    return render(request, 'perfil.html')
+    usuario_id = request.session.get('usuario_id')
+    obras = []
+    usuario = None
+    if usuario_id:
+        usuario = Practica.objects.get(id=usuario_id)
+        obras = Obra.objects.filter(autor=usuario).annotate(num_capitulos=Count('capitulo'))
+        
+    info = {
+        'obras': obras,
+        'usuario': usuario
+    }
+    return render(request, 'perfil.html', info)
 
 
 def saludo(request):
@@ -54,6 +66,7 @@ def login(request):
             # Verificamos si la contraseña es correcta
             if usuario.password == password:
                 # Si es correcta, redirigimos al dashboard (vista privada)
+                request.session['usuario_id'] = usuario.id
                 return redirect("dashboard")
             else:
                 # Si la contraseña es incorrecta, mostramos error
@@ -158,8 +171,168 @@ def editar_usuario(request, usuario_id):
         # Redirigimos a la lista de usuarios
         return redirect("lista_usuarios")
     
-    # Si no es POST, mostramos el formulario con los datos actuales
     info = {
         'usuario': usuario
     }
     return render(request, "editar_usuario.html", info)
+
+
+def editar_obra(request, obra_id):
+    obra = Obra.objects.get(id=obra_id)
+    
+    if request.method == "POST":
+        obra.titulo = request.POST.get("titulo")
+        obra.descripcion = request.POST.get("descripcion")
+        personajes_list = request.POST.getlist("personajes")
+        obra.personajes = ", ".join(personajes_list) if personajes_list else ""
+        
+        obra.categoria = request.POST.get("categoria")
+        
+        etiquetas_list = request.POST.getlist("etiquetas")
+        obra.etiquetas = ", ".join(etiquetas_list) if etiquetas_list else ""
+        
+        imagen = request.FILES.get("imagen")
+        imagen_url = request.POST.get("imagen_url")
+        
+        if imagen:
+            obra.imagen = imagen
+        elif imagen_url:
+            # Si no hay nueva imagen PERO hay nueva URL, usamos la URL y quitamos la imagen anterior
+            obra.imagen_url = imagen_url
+            obra.imagen = None
+            
+        obra.save()
+        return redirect("perfil")
+        
+    info = { 'obra': obra }
+    return render(request, 'editar_obra.html', info)
+
+
+#---------------------------------------------------
+# VISTA DE PUBLICAR OBRA
+#---------------------------------------------------
+def publicar(request):
+    if request.method == "POST":
+        titulo = request.POST.get("titulo")
+        descripcion = request.POST.get("descripcion")
+        personajes_list = request.POST.getlist("personajes")
+        personajes = ", ".join(personajes_list) if personajes_list else ""
+        
+        categoria = request.POST.get("categoria")
+        
+        etiquetas_list = request.POST.getlist("etiquetas")
+        etiquetas = ", ".join(etiquetas_list) if etiquetas_list else ""
+        imagen = request.FILES.get("imagen")
+        imagen_url = request.POST.get("imagen_url")
+        
+        usuario_id = request.session.get('usuario_id')
+        if not usuario_id:
+            return redirect('login')
+            
+        autor = Practica.objects.get(id=usuario_id)
+        
+        obra = Obra.objects.create(
+            titulo=titulo,
+            descripcion=descripcion,
+            personajes=personajes,
+            categoria=categoria,
+            etiquetas=etiquetas,
+            imagen=imagen,
+            imagen_url=imagen_url,
+            autor=autor
+        )
+        
+        request.session['obra_id'] = obra.id
+        return redirect('escribir_contenido')
+        
+    return render(request, 'publicar.html')
+
+
+#---------------------------------------------------
+# VISTA DE ESCRIBIR CONTENIDO
+#---------------------------------------------------
+def escribir_contenido(request):
+    # Recuperamos la obra que estamos editando
+    obra_id = request.session.get('obra_id')
+    obra = None
+    if obra_id:
+        obra = Obra.objects.get(id=obra_id)
+        
+    if request.method == "POST":
+        contenido = request.POST.get("contenido")
+        titulo_capitulo = request.POST.get("titulo_capitulo", "Sin Titulo") 
+        if not titulo_capitulo: titulo_capitulo = "Sin Titulo"
+        
+        # Ahora creamos el PRIMER CAPITULO en lugar de guardar en obra.contenido
+        if obra:
+            Capitulo.objects.create(
+                obra=obra,
+                titulo=titulo_capitulo,
+                contenido=contenido
+            )
+            # obra.contenido = contenido # Ya no usamos esto
+            # obra.save()
+            return redirect('perfil')
+            
+    info = { 'obra': obra } # Pasamos la obra al template para mostrar titulo o portada
+    return render(request, 'escribir_contenido.html', info)
+
+def ver_obra(request, obra_id):
+    obra = Obra.objects.get(id=obra_id)
+    # Contar capitulos
+    num_capitulos = Capitulo.objects.filter(obra=obra).count()
+    obra.num_capitulos = num_capitulos # Attach count manually or reuse annotate if efficient
+    
+    capitulos = Capitulo.objects.filter(obra=obra)
+    
+    # Check if author
+    es_autor = False
+    if 'usuario_id' in request.session:
+        if obra.autor.id == request.session['usuario_id']:
+            es_autor = True
+
+    return render(request, 'ver_obra.html', {
+        'obra': obra, 
+        'capitulos': capitulos,
+        'es_autor': es_autor
+    })
+
+def tabla_contenidos(request, obra_id):
+    obra = Obra.objects.get(id=obra_id)
+    capitulos = Capitulo.objects.filter(obra=obra)
+    return render(request, 'tabla_contenidos.html', {'obra': obra, 'capitulos': capitulos})
+
+def eliminar_capitulo(request, capitulo_id):
+    cap = Capitulo.objects.get(id=capitulo_id)
+    obra_id = cap.obra.id
+    cap.delete()
+    return redirect('tabla_contenidos', obra_id=obra_id)
+
+def eliminar_obra(request, obra_id):
+    obra = Obra.objects.get(id=obra_id)
+    obra.delete()
+    return redirect('perfil')
+
+def escribir_capitulo(request, obra_id, capitulo_id=None):
+    obra = Obra.objects.get(id=obra_id)
+    capitulo = None
+    if capitulo_id:
+        capitulo = Capitulo.objects.get(id=capitulo_id)
+
+    if request.method == "POST":
+        # Usamos titulo_capitulo del form o default
+        titulo = request.POST.get("titulo_capitulo", "Sin Titulo") 
+        if not titulo: titulo = "Sin Titulo"
+        
+        contenido = request.POST.get("contenido")
+        
+        if capitulo:
+            capitulo.titulo = titulo
+            capitulo.contenido = contenido
+            capitulo.save()
+        else:
+            Capitulo.objects.create(obra=obra, titulo=titulo, contenido=contenido)
+            
+        return redirect('tabla_contenidos', obra_id=obra.id)
+
+    return render(request, 'escribir_contenido.html', {'obra': obra, 'capitulo': capitulo})

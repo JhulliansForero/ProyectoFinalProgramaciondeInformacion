@@ -190,9 +190,14 @@
         .book-cover {
             width: 100px;
             height: 150px;
-            object-fit: cover;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
             margin-right: 25px;
+            overflow: hidden; /* Ensure no spill */
+        }
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .book-info {
             flex: 1;
@@ -245,7 +250,9 @@
     <!-- Header -->
     <header class="header-filas">
         <div class="logo-area">
-            <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
+            <a href="{% url 'dashboard' %}">
+                <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
+            </a>
         </div>
         
         <div class="search-container">
@@ -256,7 +263,7 @@
         </div>
 
         <nav class="nav-area">
-            <a href="#">Publicar</a>
+            <a href="{% url 'publicar' %}">Publicar</a>
             <a href="{% url 'perfil' %}">Mi Perfil</a>
             <div class="nav-avatar">
                 <a href="#"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
@@ -281,7 +288,7 @@
         <!-- Avatar Centro -->
         <div class="avatar-center-wrapper">
             <img src="{% static 'images/avatar_grande.png' %}" class="big-avatar" alt="Avatar">
-            <div class="username-hero">Usuariol</div>
+            <div class="username-hero">{{ usuario.username }}</div>
         </div>
     </section>
 
@@ -297,45 +304,74 @@
 
     <!-- Lista Libros -->
     <div class="content-area">
-        <!-- Libro 1 -->
+        {% for obra in obras %}
         <div class="book-card">
-            <img src="{% static 'images/libro_jardin.png' %}" class="book-cover">
+            <!-- Portada -->
+            {% if obra.imagen or obra.imagen_url %}
+            <a href="{% url 'ver_obra' obra.id %}" class="book-cover">
+                {% if obra.imagen %}
+                    <img src="{{ obra.imagen.url }}" alt="Portada">
+                {% elif obra.imagen_url %}
+                    <img src="{{ obra.imagen_url }}" alt="Portada">
+                {% endif %}
+            </a>
+            {% endif %}
+
+            <!-- Info -->
             <div class="book-info">
-                <h3 class="book-title">Los Secretos del Jardín Olvidado</h3>
-                <div class="book-meta">
-                    <b>=</b> 3
+                <div class="book-details-col">
+                    <a href="{% url 'ver_obra' obra.id %}" style="text-decoration:none;">
+                        <h3 class="book-title">{{ obra.titulo }}</h3>
+                    </a>
+                    <div class="book-stats">
+                        <span class="icon-read">👁 1</span> 
+                        <span class="icon-star">★ 1</span> 
+                        <span class="chapters-count" style="margin-left: 5px;">{{ obra.num_capitulos|default:0 }} Partes</span>
+                    </div>
                 </div>
-                <div class="book-tags">
-                    <span class="tag-pill">Amor</span>
-                    <span class="tag-pill">Fantasía</span>
-                    <span class="tag-pill">Secretos</span>
+                <div class="tags-row">
+                    {% if obra.etiquetas %}
+                        <span class="tag-pill">{{ obra.etiquetas }}</span>
+                    {% endif %}
+                     {% if obra.categoria %}
+                        <span class="tag-pill">{{ obra.categoria }}</span>
+                     {% endif %}
                 </div>
             </div>
             <div class="card-actions">
-                <img src="{% static 'images/icono_editar.png' %}" style="width:20px;" alt="Edit">
-                <img src="{% static 'images/icono_eliminar.png' %}" style="width:16px;" alt="Delete">
+                <a href="{% url 'editar_obra' obra.id %}" style="text-decoration:none;">
+                    <img src="{% static 'images/icono_editar.png' %}" style="width:20px;" alt="Edit">
+                </a>
+                <span style="cursor: pointer;" onclick="openDeleteModal('{% url 'eliminar_obra' obra.id %}')">
+                     <img src="{% static 'images/icono_eliminar.png' %}" style="width:16px;" alt="Delete">
+                </span>
             </div>
         </div>
+        {% empty %}
+        <p style="text-align: center; color: #666; margin-top: 20px;">Aún no has publicado ninguna obra.</p>
+        {% endfor %}
+    </div>
 
-        <!-- Libro 2 -->
-        <div class="book-card">
-            <img src="{% static 'images/libro_casa.png' %}" class="book-cover">
-            <div class="book-info">
-                <h3 class="book-title">La Casa Vacía</h3>
-                <div class="book-meta">
-                    <b>=</b> 5
-                </div>
-                <div class="book-tags">
-                    <span class="tag-pill">Terror</span>
-                    <span class="tag-pill">Soleda</span>
-                </div>
-            </div>
-            <div class="card-actions">
-                <img src="{% static 'images/icono_editar.png' %}" style="width:20px;" alt="Edit">
-                <img src="{% static 'images/icono_eliminar.png' %}" style="width:16px;" alt="Delete">
+    <!-- Modal Delete -->
+    <div id="deleteModal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255,255,255,0.8); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background-color: #f9f9f9; padding: 40px; border-radius: 20px; width: 400px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 20px; color: #333;">Seguro que deseas eliminar<br> esta obra entera?</h3>
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <button onclick="closeDeleteModal()" style="background-color: #d1d1d1; color: #333; border: none; padding: 10px 20px; border-radius: 20px; font-family: 'Playfair Display', serif; cursor: pointer;">Cancelar</button>
+                <a id="confirmDeleteBtn" href="#" style="background-color: #ff0000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-family: 'Playfair Display', serif;">Eliminar</a>
             </div>
         </div>
     </div>
+
+    <script>
+        function openDeleteModal(deleteUrl) {
+            document.getElementById('deleteModal').style.display = 'flex';
+            document.getElementById('confirmDeleteBtn').href = deleteUrl;
+        }
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+    </script>
 
 </body>
 </html>
