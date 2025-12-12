@@ -36,16 +36,7 @@ def perfil(request):
     return render(request, 'perfil.html', info)
 
 
-def saludo(request):
-    return render(request, 'saludo.html')
 
-
-def petro(request):
-    return render(request, 'petro.html')
-
-
-def uribe(request):
-    return render(request, 'uribe.html')
 
 
 #---------------------------------------------------
