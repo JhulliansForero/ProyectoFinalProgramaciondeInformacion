@@ -1,0 +1,286 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ obra.titulo }} - Leer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Poppins:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: #fff; }
+
+        /* HEADER PRINCIPAL */
+        .main-header {
+            background-color: #08042b;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+        .logo-area img { height: 40px; }
+        .nav-area { display: flex; align-items: center; gap: 20px; }
+        .nav-area a { color: #fff; text-decoration: none; font-family: 'Playfair Display', serif; }
+        .nav-avatar img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #5ba4cf; }
+
+        /* HEADER SECUNDARIO (Info Obra) */
+        .info-header {
+            background-color: #f8f8f8;
+            padding: 10px 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .mini-cover {
+            width: 40px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .info-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        .info-text span {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* GRID LAYOUT */
+        .reading-container {
+            display: grid;
+            grid-template-columns: 1fr 350px; /* Contenido | Sidebar */
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* AREA DE LECTURA */
+        .chapter-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .chapter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #222;
+        }
+        .text-box {
+            background-color: #f7f7f7; /* Background gris claro como en la imagen */
+            padding: 40px 50px;
+            border-radius: 5px;
+            font-family: 'Playfair Display', serif; /* Tipo de letra libro */
+            font-size: 17px;
+            line-height: 1.8;
+            color: #333;
+            width: 100%;
+            text-align: justify;
+            white-space: pre-wrap; /* Respetar saltos de linea */
+        }
+
+        /* BOTON SIGUIENTE */
+        .next-btn-container {
+            margin-top: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .next-btn {
+            background-color: #08042b;
+            color: #fff;
+            padding: 12px 60px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .next-btn:hover { background-color: #1a1444; }
+
+        /* SIDEBAR COMENTARIOS */
+        .comments-sidebar {
+            padding-top: 20px;
+        }
+        .comment-input-box {
+            background-color: #f0f0f0;
+            border-radius: 25px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .comment-input-box input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+        }
+        .comment-send-btn {
+            background-color: #2b4eff; /* Azul brillante icono */
+            color: #fff;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .comment-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background-color: #fdfdfd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            position: relative;
+        }
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .comment-content h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #222;
+        }
+        .comment-content p {
+            font-size: 13px;
+            color: #555;
+        }
+        .comment-dots {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #aaa;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header Principal -->
+    <header class="main-header">
+        <div class="logo-area">
+             <a href="{% url 'dashboard' %}">
+                <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
+            </a>
+        </div>
+        <nav class="nav-area">
+            <a href="{% url 'perfil' %}">Mi Perfil</a>
+            <div class="nav-avatar">
+                <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Header Obra -->
+    <div class="info-header">
+        {% if obra.imagen %}
+            <img src="{{ obra.imagen.url }}" class="mini-cover" alt="Cover">
+        {% elif obra.imagen_url %}
+            <img src="{{ obra.imagen_url }}" class="mini-cover" alt="Cover">
+        {% else %}
+            <div class="mini-cover" style="background:#ddd;"></div>
+        {% endif %}
+        
+        <div class="info-text">
+            <h3>{{ obra.titulo }}</h3>
+            <span>{{ obra.autor.username }}</span>
+        </div>
+    </div>
+
+    <div class="reading-container">
+        <!-- Izquierda: Contenido -->
+        <div class="chapter-area">
+            
+            {% if capitulo %}
+                <h1 class="chapter-title">{{ capitulo.titulo }}</h1>
+                
+                <div class="text-box">
+                    {% if capitulo.contenido %}
+                        {{ capitulo.contenido|linebreaks }}
+                    {% else %}
+                        <p>Este capítulo no tiene contenido aún.</p>
+                    {% endif %}
+                </div>
+
+                <div class="next-btn-container">
+                    {% if siguiente_capitulo %}
+                        <a href="{% url 'leer_capitulo' obra.id siguiente_capitulo.id %}" class="next-btn">Siguiente Parte</a>
+                    {% else %}
+                        <a href="{% url 'ver_obra' obra.id %}" class="next-btn" style="background-color: #555;">Finalizar Lectura</a>
+                    {% endif %}
+                </div>
+
+            {% else %}
+                <div class="text-box">
+                    <p>No hay capítulos en esta obra.</p>
+                </div>
+                <div class="next-btn-container">
+                    <a href="{% url 'ver_obra' obra.id %}" class="next-btn">Volver</a>
+                </div>
+            {% endif %}
+
+        </div>
+
+        <!-- Derecha: Comentarios (Mockup Visual) -->
+        <div class="comments-sidebar">
+            <div class="comment-input-box">
+                <input type="text" placeholder="Escribe un Comentario...">
+                <button class="comment-send-btn">➤</button>
+            </div>
+
+            <div class="comment-list">
+                <!-- Mockup Comment 1 -->
+                <div class="comment-item">
+                    <img src="{% static 'images/avatar_grande.png' %}" class="comment-avatar">
+                    <div class="comment-content">
+                        <h4>Mil</h4>
+                        <p>Me gusto</p>
+                    </div>
+                    <div class="comment-dots">•••</div>
+                </div>
+
+                <!-- Mockup Comment 2 -->
+                <div class="comment-item">
+                    <img src="{% static 'images/avatar_grande.png' %}" class="comment-avatar">
+                    <div class="comment-content">
+                        <h4>Row</h4>
+                        <p>Buen Inicio</p>
+                    </div>
+                    <div class="comment-dots">•••</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

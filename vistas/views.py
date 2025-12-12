@@ -327,3 +327,31 @@ def escribir_capitulo(request, obra_id, capitulo_id=None):
         return redirect('tabla_contenidos', obra_id=obra.id)
 
     return render(request, 'escribir_contenido.html', {'obra': obra, 'capitulo': capitulo})
+
+def leer_capitulo(request, obra_id, capitulo_id=None):
+    obra = Obra.objects.get(id=obra_id)
+    
+    # Logic to get the correct chapter
+    if capitulo_id:
+        capitulo = Capitulo.objects.get(id=capitulo_id)
+    else:
+        # If no ID provided, get the first chapter
+        capitulo = Capitulo.objects.filter(obra=obra).order_by('id').first()
+        
+    # Logic to find the next chapter (for the button)
+    siguiente_capitulo = None
+    if capitulo:
+        # Get all chapters ordered by ID (assuming creation order)
+        all_caps = list(Capitulo.objects.filter(obra=obra).order_by('id'))
+        try:
+            current_index = all_caps.index(capitulo)
+            if current_index + 1 < len(all_caps):
+                siguiente_capitulo = all_caps[current_index + 1]
+        except ValueError:
+            pass # Chapter not in list (?)
+
+    return render(request, 'leer_capitulo.html', {
+        'obra': obra,
+        'capitulo': capitulo,
+        'siguiente_capitulo': siguiente_capitulo
+    })

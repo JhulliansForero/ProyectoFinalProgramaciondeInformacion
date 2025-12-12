@@ -24,4 +24,8 @@ urlpatterns = [
     path('eliminar/<int:usuario_id>/', views.eliminar_usuario, name="eliminar_usuario"),
     
     path('editar/<int:usuario_id>/', views.editar_usuario, name="editar_usuario"),
+    
+    # Vista de Lectura
+    path('leer/<int:obra_id>/', views.leer_capitulo, name="leer_capitulo_inicio"),
+    path('leer/<int:obra_id>/<int:capitulo_id>/', views.leer_capitulo, name="leer_capitulo"),
 ]
