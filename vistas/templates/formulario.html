@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - BookMora</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    
     <style>
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * {
             margin: 0;
             padding: 0;
@@ -19,6 +23,9 @@
             display: flex;
         }
 
+        /* =========================================
+           LADO IZQUIERDO (Azul)
+           ========================================= */
         .lado-izquierdo {
             width: 50%;
             background: #130A3D;
@@ -72,6 +79,9 @@
             max-width: 90%;
         }
 
+        /* =========================================
+           LADO DERECHO (Blanco - Formulario)
+           ========================================= */
         .lado-derecho {
             width: 50%;
             background: #ffffff;
@@ -146,7 +156,10 @@
 </head>
 <body>
 
-    <!-- Lado Izquierdo -->
+    <!-- 
+      PANEL IZQUIERDO
+      Sección visual idéntica al login para mantener consistencia.
+    -->
     <div class="lado-izquierdo">
         <div class="logo-izq">
             <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
@@ -163,18 +176,26 @@
         </div>
     </div>
 
-    <!-- Lado Derecho -->
+    <!-- 
+      PANEL DERECHO
+      Contiene el formulario de REGISTRO de nuevo usuario.
+    -->
     <div class="lado-derecho">
         <div class="logo-principal">
             <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
         </div>
 
+        <!-- Muestra mensajes de error (ej. Usuario ya existente) -->
         {% if infosms %}
             <div class="mensaje-error">
                 {{ infosms }}
             </div>
         {% endif %}
 
+        <!-- 
+          FORMULARIO DE REGISTRO
+          Recopila Nombre, Email y Contraseña para crear un objeto 'Practica' (Usuario).
+        -->
         <form class="formulario" method="post">
             {% csrf_token %}
 

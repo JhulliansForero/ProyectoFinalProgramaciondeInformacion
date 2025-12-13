@@ -2,11 +2,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BookMora - Donde Nacen tus Historias</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Fuentes de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+    
     <style>
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * {
             margin: 0;
             padding: 0;
@@ -14,12 +20,14 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: "Poppins", sans-serif;
             background: #ffffff;
             color: #333;
         }
 
-        /* Header */
+        /* =========================================
+           HEADER Y NAVEGACIÓN
+           ========================================= */
         .header {
             display: flex;
             align-items: center;
@@ -41,11 +49,12 @@
 
         .logo-header span {
             color: #7ec8e3;
-            font-family: 'Playfair Display', serif;
+            font-family: "Playfair Display", serif;
             font-size: 18px;
             font-style: italic;
         }
 
+        /* Buscador */
         .buscador {
             display: flex;
             align-items: center;
@@ -60,11 +69,7 @@
             font-size: 14px;
         }
 
-        .buscador span {
-            color: #666;
-            font-size: 12px;
-        }
-
+        /* Enlaces de Navegación */
         .nav-header {
             display: flex;
             gap: 25px;
@@ -80,7 +85,9 @@
             color: #7ec8e3;
         }
 
-        /* Hero Section */
+        /* =========================================
+           HERO SECTION (Principal)
+           ========================================= */
         .hero {
             display: flex;
             align-items: center;
@@ -89,7 +96,7 @@
         }
 
         .hero-text h1 {
-            font-family: 'Playfair Display', serif;
+            font-family: "Playfair Display", serif;
             font-size: 36px;
             color: #333;
             line-height: 1.3;
@@ -99,19 +106,21 @@
             width: 350px;
         }
 
-        /* Sección Popular */
+        /* =========================================
+           SECCIONES COMUNES
+           ========================================= */
         .seccion {
             padding: 40px;
         }
 
         .seccion h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: "Playfair Display", serif;
             font-size: 24px;
             margin-bottom: 25px;
             color: #333;
         }
 
-        .portadas-img {
+        .portadas-img, .categorias-img {
             text-align: center;
         }
 
@@ -120,17 +129,14 @@
             width: 900px;
         }
 
-        /* Sección Categorías */
-        .categorias-img {
-            text-align: center;
-        }
-
         .categorias-img img {
             max-width: 100%;
             width: 700px;
         }
 
-        /* Sección Fandom */
+        /* =========================================
+           SECCIÓN FANDOM
+           ========================================= */
         .fandom {
             padding: 60px 40px;
             display: flex;
@@ -144,7 +150,7 @@
         }
 
         .fandom-text h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: "Playfair Display", serif;
             font-size: 32px;
             color: #333;
             line-height: 1.4;
@@ -153,58 +159,93 @@
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- 
+      HEADER PRINCIPAL
+      Contiene el logotipo, la barra de búsqueda y los enlaces de navegación (Registro/Login).
+    -->
     <header class="header">
+        <!-- Logotipo de la aplicación -->
         <div class="logo-header">
-            <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
+            <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora" />
             <span>BookMora</span>
         </div>
 
-        <div class="buscador">
-            <input type="text" placeholder="Buscar">
-            <span>Genero</span>
-        </div>
+        <!-- 
+          BARRA DE BÚSQUEDA 
+          Envía una petición GET a la vista 'buscar' con el término ingresado.
+          Incluye autocompletado con un <datalist>.
+        -->
+        <form class="buscador" method="GET" action="{% url 'buscar' %}">
+            <input type="text" name="q" list="libros-sugerencias" placeholder="Buscar" />
+            
+            <!-- Lista de sugerencias para autocompletado -->
+            <datalist id="libros-sugerencias">
+                <option value="El Susurro de las Runas">
+                <option value="Crónicas de Sombras">
+                <option value="La Canción de Leviatán">
+                <option value="Forjados en Bruma">
+                <option value="El Último Ocaso de Eterna">
+            </datalist>
+            
+            <!-- Botón oculto para permitir envío con Enter -->
+            <button type="submit" style="display:none;"></button>
+        </form>
 
+        <!-- 
+          NAVEGACIÓN 
+          Enlaces para usuarios no autenticados: Registro e Iniciar Sesión.
+        -->
         <nav class="nav-header">
-            <a href="#">Escribir ▾</a>
             <a href="{% url 'formulario' %}">Registrate</a>
             <a href="{% url 'login' %}">Iniciar Sesión</a>
         </nav>
     </header>
 
-    <!-- Hero -->
+    <!-- 
+      HERO SECTION
+      Sección principal de bienvenida con un mensaje inspirador e imagen decorativa.
+    -->
     <section class="hero">
         <div class="hero-text">
-            <h1>Conecta con el autor.<br>Vive la historia.</h1>
+            <h1>Conecta con el autor.<br />Vive la historia.</h1>
         </div>
         <div class="hero-image">
-            <img src="{% static 'images/libros_flores.png' %}" alt="Libros">
+            <img src="{% static 'images/libros_flores.png' %}" alt="Libros" />
         </div>
     </section>
 
-    <!-- Lo más Popular -->
+    <!-- 
+      SECCIÓN: LO MÁS POPULAR
+      Muestra una imagen estática representando los libros más leídos.
+    -->
     <section class="seccion">
         <h2>Lo mas Popular</h2>
         <div class="portadas-img">
-            <img src="{% static 'images/portadas_libros.png' %}" alt="Libros Populares">
+            <img src="{% static 'images/portadas_libros.png' %}" alt="Libros Populares" />
         </div>
     </section>
 
-    <!-- Diversidad de Historias -->
+    <!-- 
+      SECCIÓN: CATEGORÍAS
+      Muestra las diferentes categorías disponibles mediante una imagen.
+    -->
     <section class="seccion">
         <h2>Diversidad De Historias.</h2>
         <div class="categorias-img">
-            <img src="{% static 'images/categorias.png' %}" alt="Categorías">
+            <img src="{% static 'images/categorias.png' %}" alt="Categorías" />
         </div>
     </section>
 
-    <!-- Fandom -->
+    <!-- 
+      SECCIÓN: FANDOM
+      Sección inferior decorativa con mensaje sobre la comunidad.
+    -->
     <section class="fandom">
         <div class="fandom-image">
-            <img src="{% static 'images/personas_leyendo.png' %}" alt="Personas leyendo">
+            <img src="{% static 'images/personas_leyendo.png' %}" alt="Personas leyendo" />
         </div>
         <div class="fandom-text">
-            <h2>El fandom<br>comienza en el<br>primer capítulo.</h2>
+            <h2>El fandom<br />comienza en el<br />primer capítulo.</h2>
         </div>
     </section>
 

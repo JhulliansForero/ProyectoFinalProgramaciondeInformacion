@@ -5,13 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publicar Obra - BookMora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap');
-
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: #fafafa; }
 
-        /* Header Style (Matching Profile) */
+        /* =========================================
+           HEADER
+           ========================================= */
         .header-filas {
             background-color: #08042b;
             height: 60px;
@@ -26,7 +31,6 @@
             align-items: center;
         }
         
-        /* Nav Right */
         .nav-area {
             display: flex;
             align-items: center;
@@ -47,19 +51,22 @@
             object-fit: cover;
         }
 
-        /* Main Content */
+        /* =========================================
+           CONTENEDOR DEL FORMULARIO
+           ========================================= */
         .main-container {
-            max-width: 1000px; /* Ancho contenido */
+            max-width: 1000px;
             margin: 40px auto;
             padding: 0 20px;
             display: flex;
             gap: 50px;
         }
 
-        /* Columna Izquierda: Imagen */
+        /* Columna Izquierda: Carga de Imagen */
         .left-col {
             flex: 0 0 300px;
         }
+
         .image-placeholder {
             width: 100%;
             height: 400px;
@@ -74,13 +81,13 @@
             cursor: pointer;
         }
 
-        /* Columna Derecha: Formulario */
+        /* Columna Derecha: Campos de Texto */
         .right-col {
             flex: 1;
         }
 
         .section-title {
-            background-color: #08042b; /* Azul oscuro */
+            background-color: #08042b;
             color: white;
             font-family: 'Playfair Display', serif;
             font-size: 16px;
@@ -103,7 +110,7 @@
 
         .form-input {
             width: 100%;
-            background-color: #f0f0f0; /* Gris claro */
+            background-color: #f0f0f0;
             border: none;
             padding: 12px 15px;
             font-family: 'Poppins', sans-serif;
@@ -120,6 +127,7 @@
         .input-with-icon {
             position: relative;
         }
+        
         .input-icon {
             position: absolute;
             right: 15px;
@@ -130,6 +138,7 @@
             cursor: pointer;
         }
 
+        /* Botón Siguiente */
         .next-btn-container {
             text-align: right;
             margin-top: 40px;
@@ -148,17 +157,18 @@
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- 
+      HEADER
+      Navegación simple para volver al dashboard o perfil.
+    -->
     <header class="header-filas">
         <div class="logo-area">
-             <!-- Logo final perfil (reusing the one we uploaded) -->
             <a href="{% url 'dashboard' %}">
                 <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
             </a>
         </div>
 
         <nav class="nav-area">
-            <!-- No search bar in this view according to image -->
             <a href="{% url 'perfil' %}">Mi Perfil</a>
             <div class="nav-avatar">
                 <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
@@ -166,9 +176,17 @@
         </nav>
     </header>
 
+    <!-- 
+      FORMULARIO DE PUBLICACIÓN DE OBRA
+      Envía datos POST y archivos (enctype="multipart/form-data") para crear un nuevo registro 'Obra'.
+    -->
     <form class="main-container" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <!-- Izquierda -->
+        
+        <!-- 
+           COLUMNA IZQUIERDA: Portada
+           Permite subir un archivo de imagen o ingresar una URL.
+        -->
         <div class="left-col">
             <label for="titulo-img" class="image-placeholder">
                 Subir Imagen +
@@ -179,23 +197,26 @@
             </div>
         </div>
 
-        <!-- Derecha -->
+        <!-- 
+           COLUMNA DERECHA: Detalles de la Obra 
+        -->
         <div class="right-col">
             <div class="section-title">Detalles de la obra</div>
 
-            <!-- Titulo -->
+            <!-- Campo: Título -->
             <div class="form-group">
                 <label class="form-label">Titulo</label>
                 <input type="text" name="titulo" class="form-input" required>
             </div>
 
-            <!-- Descripción -->
+            <!-- Campo: Descripción / Sinopsis -->
             <div class="form-group">
                 <label class="form-label">Descripción</label>
                 <textarea name="descripcion" class="form-input"></textarea>
             </div>
 
-            <!-- Personajes Principales -->
+            <!-- Campo Dinámico: Personajes -->
+            <!-- Permite agregar múltiples personajes con JS (aunque actualmente el backend guarda un string) -->
             <div class="form-group">
                 <label class="form-label">Personajes Principales</label>
                 <div id="personajes-container">
@@ -206,7 +227,7 @@
                 </div>
             </div>
 
-            <!-- Categoria -->
+            <!-- Campo: Categoría (Select) -->
             <div class="form-group">
                 <label class="form-label">Categoria</label>
                 <div class="input-with-icon">
@@ -223,7 +244,7 @@
                 </div>
             </div>
 
-            <!-- Etiquetas -->
+            <!-- Campo Dinámico: Etiquetas -->
             <div class="form-group">
                 <label class="form-label">Etiquetas</label>
                 <div id="etiquetas-container">
@@ -234,6 +255,7 @@
                 </div>
             </div>
 
+            <!-- Botón de Envío -->
             <div class="next-btn-container">
                 <button type="submit" class="next-btn">Siguiente</button>
             </div>
@@ -241,6 +263,11 @@
     </form>
 
     <script>
+        /**
+         * Función: addInput
+         * Agrega dinámicamente nuevos campos de texto al contenedor especificado.
+         * Útil para ingresar múltiples personajes o etiquetas.
+         */
         function addInput(containerId, name) {
             const container = document.getElementById(containerId);
             const div = document.createElement('div');
@@ -254,7 +281,7 @@
             
             const removeIcon = document.createElement('span');
             removeIcon.className = 'input-icon';
-            removeIcon.innerText = '−'; // Menos
+            removeIcon.innerText = '−';
             removeIcon.style.cursor = 'pointer';
             removeIcon.onclick = function() { container.removeChild(div); };
             

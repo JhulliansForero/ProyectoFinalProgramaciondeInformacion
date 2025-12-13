@@ -5,13 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Obra - BookMora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap');
-
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: #fafafa; }
 
-        /* Header Style (Matching Profile) */
+        /* header (estilo perfil) */
         .header-filas {
             background-color: #08042b;
             height: 60px;
@@ -21,45 +24,23 @@
             padding: 0 40px;
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-        }
-        
-        /* Nav Right */
-        .nav-area {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .nav-area a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 15px;
-            font-family: 'Playfair Display', serif;
-            font-weight: 400;
-        }
-        .nav-avatar img {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: 2px solid #5ba4cf;
-            object-fit: cover;
-        }
+        .logo-area { display: flex; align-items: center; }
+        .nav-area { display: flex; align-items: center; gap: 20px; }
+        .nav-area a { color: #fff; text-decoration: none; font-size: 15px; font-family: 'Playfair Display', serif; }
+        .nav-avatar img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #5ba4cf; object-fit: cover; }
 
-        /* Main Content */
+        /* Contenedor Principal */
         .main-container {
-            max-width: 1000px; /* Ancho contenido */
+            max-width: 1000px;
             margin: 40px auto;
             padding: 0 20px;
             display: flex;
             gap: 50px;
         }
 
-        /* Columna Izquierda: Imagen */
-        .left-col {
-            flex: 0 0 300px;
-        }
+        /* Columna Izquierda (Imagen) */
+        .left-col { flex: 0 0 300px; }
+
         .image-placeholder {
             width: 100%;
             height: 400px;
@@ -84,13 +65,11 @@
             left: 0;
         }
 
-        /* Columna Derecha: Formulario */
-        .right-col {
-            flex: 1;
-        }
+        /* Columna Derecha */
+        .right-col { flex: 1; }
 
         .section-title {
-            background-color: #08042b; /* Azul oscuro */
+            background-color: #08042b;
             color: white;
             font-family: 'Playfair Display', serif;
             font-size: 16px;
@@ -99,60 +78,16 @@
             margin-bottom: 25px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
+        .form-label { font-family: 'Playfair Display', serif; font-size: 16px; color: #333; margin-bottom: 8px; display: block; }
+        .form-input { width: 100%; background-color: #f0f0f0; border: none; padding: 12px 15px; font-family: 'Poppins', sans-serif; font-size: 14px; color: #333; outline: none; }
+        textarea.form-input { height: 100px; resize: none; }
 
-        .form-label {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            color: #333;
-            margin-bottom: 8px;
-            display: block;
-        }
+        .input-with-icon { position: relative; }
+        .input-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #000; cursor: pointer; }
 
-        .form-input {
-            width: 100%;
-            background-color: #f0f0f0; /* Gris claro */
-            border: none;
-            padding: 12px 15px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            color: #333;
-            outline: none;
-        }
-        
-        textarea.form-input {
-            height: 100px;
-            resize: none;
-        }
-
-        .input-with-icon {
-            position: relative;
-        }
-        .input-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            color: #000;
-            cursor: pointer;
-        }
-
-        .next-btn-container {
-            text-align: right;
-            margin-top: 40px;
-        }
-        
-        .next-btn {
-            background: none;
-            border: none;
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            color: #333;
-            cursor: pointer;
-        }
+        .next-btn-container { text-align: right; margin-top: 40px; }
+        .next-btn { background: none; border: none; font-family: 'Playfair Display', serif; font-size: 18px; color: #333; cursor: pointer; }
 
     </style>
 </head>
@@ -161,14 +96,12 @@
     <!-- Header -->
     <header class="header-filas">
         <div class="logo-area">
-             <!-- Logo final perfil (reusing the one we uploaded) -->
             <a href="{% url 'dashboard' %}">
                 <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
             </a>
         </div>
 
         <nav class="nav-area">
-            <!-- No search bar in this view according to image -->
             <a href="{% url 'perfil' %}">Mi Perfil</a>
             <div class="nav-avatar">
                 <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
@@ -176,11 +109,17 @@
         </nav>
     </header>
 
+    <!-- 
+      FORMULARIO DE EDICIÓN
+      Pre-carga los datos de la obra existente para su modificación.
+    -->
     <form class="main-container" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <!-- Izquierda -->
+        
+        <!-- Izquierda: Edición de Portada -->
         <div class="left-col">
             <label for="titulo-img" class="image-placeholder">
+                <!-- Muestra la imagen actual si existe -->
                 {% if obra.imagen %}
                     <img src="{{ obra.imagen.url }}" class="preview">
                 {% elif obra.imagen_url %}
@@ -188,6 +127,7 @@
                 {% else %}
                     Subir Imagen +
                 {% endif %}
+                <!-- Input oculto para subir nuevo archivo -->
                 <input type="file" name="imagen" id="titulo-img" style="display: none;">
             </label>
             <div style="margin-top: 10px;">
@@ -195,9 +135,12 @@
             </div>
         </div>
 
-        <!-- Derecha -->
+        <!-- Derecha: Campos de Texto -->
         <div class="right-col">
-            <!-- Tabs -->
+            <!-- 
+               PESTAÑAS DE NAVEGACIÓN
+               Permite alternar entre "Detalles" (esta vista) y "Tabla de Contenidos".
+            -->
              <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <a href="#" style="background-color: #08042b; color: #fff; padding: 10px 20px; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 14px;">Detalles de la obra</a>
                 <a href="{% url 'tabla_contenidos' obra.id %}" style="background-color: #0b0640; opacity: 0.7; color: #fff; padding: 10px 20px; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 14px;">Tabla de contenidos</a>
@@ -205,7 +148,7 @@
 
             <div class="section-title">Editar Obra</div>
 
-            <!-- Titulo -->
+            <!-- Título -->
             <div class="form-group">
                 <label class="form-label">Titulo</label>
                 <input type="text" name="titulo" class="form-input" value="{{ obra.titulo }}" required>
@@ -217,7 +160,7 @@
                 <textarea name="descripcion" class="form-input">{{ obra.descripcion }}</textarea>
             </div>
 
-            <!-- Personajes Principales -->
+            <!-- Personajes -->
             <div class="form-group">
                 <label class="form-label">Personajes Principales</label>
                 <div id="personajes-container">
@@ -228,7 +171,7 @@
                 </div>
             </div>
 
-            <!-- Categoria -->
+            <!-- Categoría -->
             <div class="form-group">
                 <label class="form-label">Categoria</label>
                 <div class="input-with-icon">
@@ -263,12 +206,13 @@
     </form>
 
     <script>
-        // Set category value
+        // Establece el valor seleccionado en el select de categoría basado en el dato guardado
         const savedCategory = "{{ obra.categoria }}";
         if(savedCategory) {
             document.getElementById('categoria-select').value = savedCategory;
         }
 
+        // Función para agregar inputs dinámicos
         function addInput(containerId, name) {
             const container = document.getElementById(containerId);
             const div = document.createElement('div');

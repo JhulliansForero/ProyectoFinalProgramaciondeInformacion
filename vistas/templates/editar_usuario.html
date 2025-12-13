@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,13 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Usuario - BookMora</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
@@ -39,74 +39,29 @@
             margin-bottom: 30px;
         }
 
-        .formulario {
-            display: flex;
-            flex-direction: column;
-        }
+        .formulario { display: flex; flex-direction: column; }
+        .campo-grupo { margin-bottom: 20px; }
+        .campo-grupo label { display: block; color: #666; font-size: 14px; margin-bottom: 5px; }
+        .campo-grupo input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: 'Poppins', sans-serif; transition: border-color 0.3s; }
+        .campo-grupo input:focus { outline: none; border-color: #7ec8e3; }
 
-        .campo-grupo {
-            margin-bottom: 20px;
-        }
+        .btn-guardar { width: 100%; padding: 15px; background: #7ec8e3; border: none; border-radius: 8px; color: white; font-size: 16px; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.3s; margin-top: 10px; }
+        .btn-guardar:hover { background: #5fb4d3; }
 
-        .campo-grupo label {
-            display: block;
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .campo-grupo input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: 'Poppins', sans-serif;
-            transition: border-color 0.3s;
-        }
-
-        .campo-grupo input:focus {
-            outline: none;
-            border-color: #7ec8e3;
-        }
-
-        .btn-guardar {
-            width: 100%;
-            padding: 15px;
-            background: #7ec8e3;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-guardar:hover {
-            background: #5fb4d3;
-        }
-
-        .link-volver {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #7ec8e3;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .link-volver:hover {
-            color: #5fb4d3;
-        }
+        .link-volver { display: block; text-align: center; margin-top: 20px; color: #7ec8e3; text-decoration: none; font-size: 14px; }
+        .link-volver:hover { color: #5fb4d3; }
     </style>
 </head>
 <body>
 
+    <!-- Contenedor Centrado -->
     <div class="contenedor">
         <h1>🐦 Editar Usuario</h1>
 
+        <!-- 
+          FORMULARIO DE EDICIÓN DE USUARIO
+          Permite modificar nombre, email y contraseña del usuario seleccionado.
+        -->
         <form class="formulario" method="post">
             {% csrf_token %}
 

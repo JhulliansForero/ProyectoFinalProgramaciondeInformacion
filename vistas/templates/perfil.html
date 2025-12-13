@@ -5,17 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - BookMora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Poppins:wght@300;400;500;600&display=swap');
-
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background-color: #fff; }
+        body { font-family: 'Poppins', sans-serif; background-color: #fafafa; }
 
         /* =========================================
-           HEADER (Azul Oscuro Profundo)
+           HEADER
            ========================================= */
         .header-filas {
-            background-color: #08042b; /* Azul muy oscuro casi negro */
+            background-color: #08042b;
             height: 60px;
             display: flex;
             align-items: center;
@@ -25,50 +28,12 @@
 
         .logo-area {
             display: flex;
-            flex-direction: column;
-            width: auto;
-            margin-right: 20px;
-        }
-        .logo-area img { /* width managed inline */ }
-        .logo-area span {
-            color: #5ba4cf;
-            font-family: 'Playfair Display', serif;
-            font-size: 10px;
-            font-style: italic;
-            margin-top: 2px;
-        }
-
-        /* Buscador CENTRADO */
-        .search-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
-        .search-box {
-            background-color: #f2f2f2;
-            width: 400px;
-            height: 32px;
-            display: flex;
             align-items: center;
-            padding: 0 10px;
-            border-radius: 2px;
-        }
-        .search-box span { font-size: 14px; color: #555; margin-right: 8px; }
-        .search-box input {
-            background: transparent;
-            border: none;
-            outline: none;
-            font-size: 13px;
-            width: 100%;
-            color: #333;
         }
 
-        /* Nav DERECHA */
         .nav-area {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            width: 150px; /* Igual que logo para centrar buscador perfectamente */
             gap: 20px;
         }
         .nav-area a {
@@ -83,295 +48,297 @@
             height: 38px;
             border-radius: 50%;
             border: 2px solid #5ba4cf;
+            object-fit: cover;
         }
 
         /* =========================================
-           SECCIÓN PERFIL (Azul Cielo Claro)
+           PERFIL HERO
            ========================================= */
         .profile-hero {
-            background-color: #aedefc; /* Azul cielo exacto de la imagen */
-            position: relative;
-            height: 160px; /* Altura para contener stats y avatar */
-            display: flex;
-            justify-content: center; /* Para centrar avatar */
-            border-bottom: 1px solid #9bcceb;
-        }
-
-        /* Stats a la IZQUIERDA absoluta */
-        .stats-left {
-            position: absolute;
-            left: 50px;
-            top: 20px;
-            display: flex;
-            gap: 40px;
-        }
-        .stat-group {
-            text-align: center;
-            color: #333; /* Texto oscuro sobre fondo claro */
-        }
-        .stat-label {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 2px;
-        }
-        .stat-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            margin-top: 2px;
-        }
-
-        /* Avatar CENTRADO */
-        .avatar-center-wrapper {
-            margin-top: 15px;
-            text-align: center;
-            z-index: 10;
-        }
-        .big-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 3px solid #1a2e5a; /* Borde oscuro del avatar */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .username-hero {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px;
-            color: #000;
-            margin-top: 5px;
-        }
-
-        /* =========================================
-           BARRA "OBRAS" (Azul Grisáceo Pálido)
-           ========================================= */
-        .obras-bar {
-            background-color: #dbebf9; /* Azul pálido barra intermedia */
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 50px;
-        }
-        .obras-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            color: #000;
-            font-weight: 400;
-        }
-        .edit-profile-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        .edit-profile-btn span {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px;
-            color: #333;
-        }
-        .ico-gear { font-size: 18px; }
-
-        /* =========================================
-           LISTA DE OBRAS (Blanco)
-           ========================================= */
-        .content-area {
-            background-color: #fff;
+            background-color: #f4f4f4;
             padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-content {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 15px;
         }
-        .book-card {
-            width: 700px;
-            display: flex;
-            margin-bottom: 40px;
-            position: relative;
-        }
-        .book-cover {
-            width: 100px;
-            height: 150px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            margin-right: 25px;
-            overflow: hidden; /* Ensure no spill */
-        }
-        .book-cover img {
-            width: 100%;
-            height: 100%;
+
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
             object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .book-info {
-            flex: 1;
-            padding-top: 10px;
-        }
-        .book-title {
-            font-family: 'Poppins', sans-serif; /* Usando poppins para titulo según imagen */
+
+        .profile-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
             font-weight: 600;
-            font-size: 15px;
             color: #222;
-            margin-bottom: 5px;
         }
-        .book-meta {
-            font-size: 12px;
-            color: #444;
-            margin-bottom: 10px;
+        
+        .profile-username {
+            font-size: 16px;
+            color: #666;
+            margin-top: -10px;
+        }
+
+        .profile-stats {
             display: flex;
-            align-items: center;
-            gap: 5px;
+            gap: 30px;
+            margin-top: 10px;
         }
-        .book-tags {
-            display: flex;
-            gap: 10px;
+        
+        .stat-item {
+            text-align: center;
         }
-        .tag-pill {
-            background-color: #f0f0f0;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-family: 'Playfair Display', serif; /* Tags estilo serif en imagen */
+        .stat-number {
+            display: block;
+            font-weight: 600;
+            font-size: 18px;
             color: #333;
         }
-        .card-actions {
-            position: absolute;
-            right: 0;
-            top: 10px;
+        .stat-label {
+            font-size: 12px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .edit-profile-btn {
+            margin-top: 10px;
+            padding: 8px 25px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: #fff;
+            color: #333;
+            font-size: 13px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .edit-profile-btn:hover { background: #eee; }
+
+        /* =========================================
+           LISTA DE OBRAS
+           ========================================= */
+        .works-section {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .works-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 30px;
+        }
+
+        .works-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            padding: 10px 0;
+            border-bottom: 2px solid #333;
+            margin-bottom: -2px;
+        }
+
+        .new-work-btn {
+            background-color: #08042b;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* Tarjeta de Obra */
+        .work-card {
+            display: flex;
+            gap: 20px;
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .work-cover {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            background-color: #ddd;
+            border-radius: 4px;
+        }
+
+        .work-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .work-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .work-meta {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 10px;
             display: flex;
             gap: 15px;
         }
-        .action-icon {
-            font-size: 20px;
-            color: #333;
-            cursor: pointer;
+
+        .work-desc {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
+
+        .work-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .action-link {
+            font-size: 13px;
+            color: #5ba4cf;
+            text-decoration: none;
+        }
+        .action-link.delete { color: #e74c3c; }
 
     </style>
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- 
+      HEADER
+      Navegación con acceso al dashboard y link a publicar obra.
+    -->
     <header class="header-filas">
         <div class="logo-area">
             <a href="{% url 'dashboard' %}">
                 <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
             </a>
         </div>
-        
-        <div class="search-container">
-            <div class="search-box">
-                <img src="{% static 'images/icono_busqueda.png' %}" alt="Buscar" style="width: 18px; margin-right: 8px;">
-                <input type="text" placeholder="Busca">
-            </div>
-        </div>
 
         <nav class="nav-area">
-            <a href="{% url 'publicar' %}">Publicar</a>
-            <a href="{% url 'perfil' %}">Mi Perfil</a>
+            <a href="{% url 'publicar' %}">Escribir</a>
+            <!-- El avatar también sirve de enlace para recargar el perfil -->
             <div class="nav-avatar">
-                <a href="#"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
+                <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
             </div>
         </nav>
     </header>
 
-    <!-- Sección Perfil Azul Celeste -->
-    <section class="profile-hero">
-        <!-- Stats Izquierda -->
-        <div class="stats-left">
-            <div class="stat-group">
-                <div class="stat-label">Obras</div>
-                <div class="stat-value">2</div>
+    <!-- 
+      SECCIÓN DE PERFIL (HERO)
+      Muestra la información pública del usuario: Avatar, Nombre, Estadísticas.
+    -->
+    <div class="profile-hero">
+        <div class="profile-content">
+            <!-- Avatar del Usuario (Estático por ahora) -->
+            <img src="{% static 'images/avatar_grande.png' %}" class="profile-avatar-large" alt="Avatar">
+            
+            <!-- Nombre y Username -->
+            <div class="text-center">
+                <h1 class="profile-name">{{ usuario_actual.username|default:"Usuario" }}</h1>
+                <p class="profile-username">@{{ usuario_actual.username|lower }}</p>
             </div>
-            <div class="stat-group">
-                <div class="stat-label">Lista de Lectura</div>
-                <div class="stat-value">5</div>
+
+            <!-- Estadísticas de publicación -->
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-number">{{ obras|length }}</span>
+                    <span class="stat-label">Obras</span>
+                </div>
+                <div class="stat-item">
+                    <!-- Placeholder para seguidores (funcionalidad futura) -->
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">Seguidores</span>
+                </div>
             </div>
-        </div>
 
-        <!-- Avatar Centro -->
-        <div class="avatar-center-wrapper">
-            <img src="{% static 'images/avatar_grande.png' %}" class="big-avatar" alt="Avatar">
-            <div class="username-hero">{{ usuario.username }}</div>
-        </div>
-    </section>
-
-    <!-- Barra Obras -->
-    <div class="obras-bar">
-        <h2 class="obras-title">Obras</h2>
-        <div class="edit-profile-btn">
-            <!-- Icono engranaje imagen estatica o font -->
-            <img src="{% static 'images/icono_config.png' %}" style="width:20px;" alt="Config">
-            <span>Edita tu Perfil</span>
+            <!-- Botón para editar información del usuario -->
+            <a href="{% url 'editar_usuario' usuario_actual.id %}" class="edit-profile-btn">Editar Perfil</a>
         </div>
     </div>
 
-    <!-- Lista Libros -->
-    <div class="content-area">
-        {% for obra in obras %}
-        <div class="book-card">
-            <!-- Portada -->
-            {% if obra.imagen or obra.imagen_url %}
-            <a href="{% url 'ver_obra' obra.id %}" class="book-cover">
-                {% if obra.imagen %}
-                    <img src="{{ obra.imagen.url }}" alt="Portada">
-                {% elif obra.imagen_url %}
-                    <img src="{{ obra.imagen_url }}" alt="Portada">
-                {% endif %}
-            </a>
-            {% endif %}
+    <!-- 
+      SECCIÓN DE OBRAS
+      Lista todas las obras creadas por el usuario actual.
+    -->
+    <div class="works-section">
+        <div class="works-header">
+            <div class="works-title">Mis Obras</div>
+            <a href="{% url 'publicar' %}" class="new-work-btn">Nueva Historia</a>
+        </div>
 
-            <!-- Info -->
-            <div class="book-info">
-                <div class="book-details-col">
-                    <a href="{% url 'ver_obra' obra.id %}" style="text-decoration:none;">
-                        <h3 class="book-title">{{ obra.titulo }}</h3>
-                    </a>
-                    <div class="book-stats">
-                        <span class="icon-read">👁 1</span> 
-                        <span class="icon-star">★ 1</span> 
-                        <span class="chapters-count" style="margin-left: 5px;">{{ obra.num_capitulos|default:0 }} Partes</span>
+        <div class="works-list">
+            {% for obra in obras %}
+                <!-- Tarjeta Individual de Obra -->
+                <div class="work-card">
+                    <!-- Portada -->
+                    {% if obra.imagen %}
+                        <img src="{{ obra.imagen.url }}" class="work-cover" alt="Cover">
+                    {% elif obra.imagen_url %}
+                        <img src="{{ obra.imagen_url }}" class="work-cover" alt="Cover">
+                    {% else %}
+                        <div class="work-cover" style="display:flex;align-items:center;justify-content:center;color:#666;font-size:12px;">Sin Portada</div>
+                    {% endif %}
+
+                    <!-- Información de la Obra -->
+                    <div class="work-info">
+                        <div>
+                            <a href="{% url 'ver_obra' obra.id %}" class="work-title">{{ obra.titulo }}</a>
+                            <div class="work-meta">
+                                <span>{{ obra.categoria|default:"Sin Categoría" }}</span>
+                                <span>•</span>
+                                <!-- Conteo de capítulos/partes -->
+                                <span>{{ obra.capitulo_set.count }} Partes</span>
+                            </div>
+                            <p class="work-desc">{{ obra.descripcion|default:"Sin descripción." }}</p>
+                        </div>
+                        
+                        <!-- Acciones: Continuar escribiendo, Editar, Eliminar -->
+                        <div class="work-actions">
+                            <a href="{% url 'tabla_contenidos' obra.id %}" class="action-link" style="font-weight:600;">Continuar Escribiendo</a>
+                            <a href="{% url 'editar_obra' obra.id %}" class="action-link">Editar Información</a>
+                            <a href="{% url 'eliminar_obra' obra.id %}" class="action-link delete" onclick="return confirm('¿Estás seguro de eliminar esta obra?');">Eliminar</a>
+                        </div>
                     </div>
                 </div>
-                <div class="tags-row">
-                    {% if obra.etiquetas %}
-                        <span class="tag-pill">{{ obra.etiquetas }}</span>
-                    {% endif %}
-                     {% if obra.categoria %}
-                        <span class="tag-pill">{{ obra.categoria }}</span>
-                     {% endif %}
+            {% empty %}
+                <!-- Estado Vacío -->
+                <div style="text-align: center; padding: 40px; color: #666;">
+                    <p>Aún no has publicado ninguna obra.</p>
+                    <br>
+                    <a href="{% url 'publicar' %}" class="new-work-btn" style="background:#ddd; color:#333;">Empieza a escribir</a>
                 </div>
-            </div>
-            <div class="card-actions">
-                <a href="{% url 'editar_obra' obra.id %}" style="text-decoration:none;">
-                    <img src="{% static 'images/icono_editar.png' %}" style="width:20px;" alt="Edit">
-                </a>
-                <span style="cursor: pointer;" onclick="openDeleteModal('{% url 'eliminar_obra' obra.id %}')">
-                     <img src="{% static 'images/icono_eliminar.png' %}" style="width:16px;" alt="Delete">
-                </span>
-            </div>
-        </div>
-        {% empty %}
-        <p style="text-align: center; color: #666; margin-top: 20px;">Aún no has publicado ninguna obra.</p>
-        {% endfor %}
-    </div>
-
-    <!-- Modal Delete -->
-    <div id="deleteModal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255,255,255,0.8); z-index: 1000; justify-content: center; align-items: center;">
-        <div style="background-color: #f9f9f9; padding: 40px; border-radius: 20px; width: 400px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-            <h3 style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 20px; color: #333;">Seguro que deseas eliminar<br> esta obra entera?</h3>
-            <div style="display: flex; justify-content: center; gap: 20px;">
-                <button onclick="closeDeleteModal()" style="background-color: #d1d1d1; color: #333; border: none; padding: 10px 20px; border-radius: 20px; font-family: 'Playfair Display', serif; cursor: pointer;">Cancelar</button>
-                <a id="confirmDeleteBtn" href="#" style="background-color: #ff0000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-family: 'Playfair Display', serif;">Eliminar</a>
-            </div>
+            {% endfor %}
         </div>
     </div>
-
-    <script>
-        function openDeleteModal(deleteUrl) {
-            document.getElementById('deleteModal').style.display = 'flex';
-            document.getElementById('confirmDeleteBtn').href = deleteUrl;
-        }
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').style.display = 'none';
-        }
-    </script>
 
 </body>
 </html>

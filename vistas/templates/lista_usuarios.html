@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,13 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Usuarios - BookMora</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
@@ -19,25 +19,11 @@
             padding: 40px 20px;
         }
 
-        .contenedor {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        .contenedor { max-width: 1000px; margin: 0 auto; }
+        h1 { text-align: center; color: #7ec8e3; font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 40px; }
 
-        h1 {
-            text-align: center;
-            color: #7ec8e3;
-            font-family: 'Playfair Display', serif;
-            font-size: 36px;
-            margin-bottom: 40px;
-        }
-
-        .usuarios-lista {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
+        /* Lista de Tarjetas */
+        .usuarios-lista { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
 
         .usuario-card {
             background: #ffffff;
@@ -48,66 +34,18 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .usuario-icono {
-            font-size: 50px;
-            margin-bottom: 15px;
-        }
+        .usuario-icono { font-size: 50px; margin-bottom: 15px; }
+        .usuario-card p { font-size: 18px; color: #333; margin-bottom: 5px; }
+        .usuario-card .email { font-size: 14px; color: #666; margin-bottom: 20px; }
 
-        .usuario-card p {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 5px;
-        }
+        /* Botones de Acción */
+        .botones { display: flex; gap: 10px; justify-content: center; }
+        .btn-actualizar { background-color: #7ec8e3; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; font-size: 14px; transition: background 0.3s; }
+        .btn-actualizar:hover { background-color: #5fb4d3; }
+        .btn-eliminar { background-color: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; font-size: 14px; transition: background 0.3s; }
+        .btn-eliminar:hover { background-color: #c0392b; }
 
-        .usuario-card .email {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .botones {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .btn-actualizar {
-            background-color: #7ec8e3;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-
-        .btn-actualizar:hover {
-            background-color: #5fb4d3;
-        }
-
-        .btn-eliminar {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-
-        .btn-eliminar:hover {
-            background-color: #c0392b;
-        }
-
-        .sin-usuarios {
-            text-align: center;
-            color: #a8d8ea;
-            font-size: 18px;
-        }
+        .sin-usuarios { text-align: center; color: #a8d8ea; font-size: 18px; }
     </style>
 </head>
 <body>
@@ -115,14 +53,22 @@
     <div class="contenedor">
         <h1>🐦 Usuarios Registrados</h1>
 
+        <!-- 
+          LISTA DE USUARIOS
+          Itera sobre la variable 'usuarios' y muestra una tarjeta por c/u.
+        -->
         {% if usuarios %}
             <div class="usuarios-lista">
                 {% for usuario in usuarios %}
                     <div class="usuario-card">
+                        <!-- Icono Placeholder -->
                         <div class="usuario-icono">👤</div>
+                        
+                        <!-- Datos del Usuario -->
                         <p><strong>{{ usuario.username }}</strong></p>
                         <p class="email">{{ usuario.email }}</p>
                         
+                        <!-- Acciones: Editar y Eliminar -->
                         <div class="botones">
                             <a href="{% url 'editar_usuario' usuario.id %}" class="btn-actualizar">Editar</a>
                             <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn-eliminar">Eliminar</a>
@@ -131,6 +77,7 @@
                 {% endfor %}
             </div>
         {% else %}
+            <!-- Estado Vacío -->
             <p class="sin-usuarios">No hay usuarios registrados.</p>
         {% endif %}
     </div>

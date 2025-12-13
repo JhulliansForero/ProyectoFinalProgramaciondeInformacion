@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - BookMora</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    
     <style>
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * {
             margin: 0;
             padding: 0;
@@ -19,6 +23,9 @@
             display: flex;
         }
 
+        /* =========================================
+           LADO IZQUIERDO (Azul)
+           ========================================= */
         .lado-izquierdo {
             width: 50%;
             background: #130A3D;
@@ -72,6 +79,9 @@
             max-width: 90%;
         }
 
+        /* =========================================
+           LADO DERECHO (Blanco - Formulario)
+           ========================================= */
         .lado-derecho {
             width: 50%;
             background: #ffffff;
@@ -146,13 +156,17 @@
 </head>
 <body>
 
-    <!-- Lado Izquierdo -->
+    <!-- 
+      PANEL IZQUIERDO
+      Sección visual con fondo azul, logotipo e imagen decorativa.
+    -->
     <div class="lado-izquierdo">
         <div class="logo-izq">
             <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
             <span>BookMora</span>
         </div>
 
+        <!-- Enlaces rápidos para alternar entre Login y Registro -->
         <div class="nav-links">
             <a href="{% url 'login' %}">Iniciar Sesión</a>
             <a href="{% url 'formulario' %}">Registrate</a>
@@ -163,18 +177,26 @@
         </div>
     </div>
 
-    <!-- Lado Derecho -->
+    <!-- 
+      PANEL DERECHO
+      Contiene el formulario de inicio de sesión.
+    -->
     <div class="lado-derecho">
         <div class="logo-principal">
             <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
         </div>
 
+        <!-- Bloque para mostrar errores de autenticación (si existen) -->
         {% if error %}
             <div class="mensaje-error">
                 {{ error }}
             </div>
         {% endif %}
 
+        <!-- 
+          FORMULARIO DE LOGIN
+          Envía datos POST a la vista 'login'.
+        -->
         <form class="formulario" method="post">
             {% csrf_token %}
 
@@ -186,7 +208,7 @@
                 <input type="password" name="password" placeholder="Contraseña" required>
             </div>
 
-            <button type="submit" class="btn-login">Iniciar Seccion</button>
+            <button type="submit" class="btn-login">Iniciar Sesión</button>
         </form>
     </div>
 

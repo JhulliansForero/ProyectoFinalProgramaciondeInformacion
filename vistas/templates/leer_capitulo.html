@@ -5,13 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ obra.titulo }} - Leer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Poppins:wght@300;400;500;600&display=swap');
-
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: #fff; }
 
-        /* HEADER PRINCIPAL */
+        /* =========================================
+           HEADER PRINCIPAL
+           ========================================= */
         .main-header {
             background-color: #08042b;
             height: 60px;
@@ -20,12 +25,15 @@
             justify-content: space-between;
             padding: 0 40px;
         }
+
         .logo-area img { height: 40px; }
         .nav-area { display: flex; align-items: center; gap: 20px; }
         .nav-area a { color: #fff; text-decoration: none; font-family: 'Playfair Display', serif; }
         .nav-avatar img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #5ba4cf; }
 
-        /* HEADER SECUNDARIO (Info Obra) */
+        /* =========================================
+           HEADER SECUNDARIO (Info Obra)
+           ========================================= */
         .info-header {
             background-color: #f8f8f8;
             padding: 10px 40px;
@@ -37,6 +45,7 @@
             top: 0;
             z-index: 100;
         }
+
         .mini-cover {
             width: 40px;
             height: 60px;
@@ -44,59 +53,66 @@
             border-radius: 4px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+
         .info-text h3 {
             font-family: 'Playfair Display', serif;
             font-size: 18px;
             color: #333;
             margin-bottom: 2px;
         }
+
         .info-text span {
             font-size: 13px;
             color: #666;
         }
 
-        /* GRID LAYOUT */
+        /* =========================================
+           LAYOUT DE LECTURA
+           ========================================= */
         .reading-container {
             display: grid;
-            grid-template-columns: 1fr 350px; /* Contenido | Sidebar */
+            grid-template-columns: 1fr 350px;
             gap: 40px;
             max-width: 1300px;
             margin: 0 auto;
             padding: 40px;
         }
 
-        /* AREA DE LECTURA */
+        /* Área de Contenido */
         .chapter-area {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         .chapter-title {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
             margin-bottom: 30px;
             color: #222;
         }
+
         .text-box {
-            background-color: #f7f7f7; /* Background gris claro como en la imagen */
+            background-color: #f7f7f7;
             padding: 40px 50px;
             border-radius: 5px;
-            font-family: 'Playfair Display', serif; /* Tipo de letra libro */
+            font-family: 'Playfair Display', serif;
             font-size: 17px;
             line-height: 1.8;
             color: #333;
             width: 100%;
             text-align: justify;
-            white-space: pre-wrap; /* Respetar saltos de linea */
+            white-space: pre-wrap;
         }
 
-        /* BOTON SIGUIENTE */
+        /* Botón Siguiente */
         .next-btn-container {
             margin-top: 40px;
             width: 100%;
             display: flex;
             justify-content: center;
         }
+
         .next-btn {
             background-color: #08042b;
             color: #fff;
@@ -109,10 +125,11 @@
         }
         .next-btn:hover { background-color: #1a1444; }
 
-        /* SIDEBAR COMENTARIOS */
+        /* Sidebar de Comentarios */
         .comments-sidebar {
             padding-top: 20px;
         }
+
         .comment-input-box {
             background-color: #f0f0f0;
             border-radius: 25px;
@@ -122,6 +139,7 @@
             justify-content: space-between;
             margin-bottom: 30px;
         }
+
         .comment-input-box input {
             border: none;
             background: transparent;
@@ -130,8 +148,9 @@
             font-family: 'Poppins', sans-serif;
             font-size: 14px;
         }
+
         .comment-send-btn {
-            background-color: #2b4eff; /* Azul brillante icono */
+            background-color: #2b4eff;
             color: #fff;
             border: none;
             width: 30px;
@@ -149,6 +168,7 @@
             flex-direction: column;
             gap: 20px;
         }
+
         .comment-item {
             display: flex;
             gap: 15px;
@@ -158,21 +178,25 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
             position: relative;
         }
+
         .comment-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
         }
+
         .comment-content h4 {
             font-size: 14px;
             margin-bottom: 4px;
             color: #222;
         }
+
         .comment-content p {
             font-size: 13px;
             color: #555;
         }
+        
         .comment-dots {
             position: absolute;
             top: 15px;
@@ -181,12 +205,14 @@
             cursor: pointer;
             font-weight: bold;
         }
-
     </style>
 </head>
 <body>
 
-    <!-- Header Principal -->
+    <!-- 
+      HEADER PRINCIPAL
+      Navegación estándar de la aplicación.
+    -->
     <header class="main-header">
         <div class="logo-area">
              <a href="{% url 'dashboard' %}">
@@ -201,7 +227,11 @@
         </nav>
     </header>
 
-    <!-- Header Obra -->
+    <!-- 
+      HEADER SECUNDARIO (Info Exclusiva de la Obra)
+      Muestra la portada miniatura y el título de la obra que se está leyendo.
+      Se mantiene fijo (sticky) al hacer scroll.
+    -->
     <div class="info-header">
         {% if obra.imagen %}
             <img src="{{ obra.imagen.url }}" class="mini-cover" alt="Cover">
@@ -217,13 +247,22 @@
         </div>
     </div>
 
+    <!-- 
+      CONTENEDOR DE LECTURA
+      Estructura de dos columnas: Texto del capítulo (Izquierda) y Comentarios (Derecha).
+    -->
     <div class="reading-container">
-        <!-- Izquierda: Contenido -->
+        
+        <!-- COLUMNA IZQUIERDA: Texto del Capítulo -->
         <div class="chapter-area">
-            
             {% if capitulo %}
+                <!-- Título del Capítulo actual -->
                 <h1 class="chapter-title">{{ capitulo.titulo }}</h1>
                 
+                <!-- 
+                   CONTENIDO DEL CAPÍTULO 
+                   Usa el filtro |linebreaks para convertir saltos de línea en párrafos HTML.
+                -->
                 <div class="text-box">
                     {% if capitulo.contenido %}
                         {{ capitulo.contenido|linebreaks }}
@@ -232,6 +271,11 @@
                     {% endif %}
                 </div>
 
+                <!-- 
+                   NAVEGACIÓN DE CAPÍTULOS
+                   Si hay un siguiente capítulo, muestra botón "Siguiente".
+                   Si es el último, muestra botón "Finalizar Lectura" que regresa a la ficha de la obra.
+                -->
                 <div class="next-btn-container">
                     {% if siguiente_capitulo %}
                         <a href="{% url 'leer_capitulo' obra.id siguiente_capitulo.id %}" class="next-btn">Siguiente Parte</a>
@@ -239,7 +283,6 @@
                         <a href="{% url 'ver_obra' obra.id %}" class="next-btn" style="background-color: #555;">Finalizar Lectura</a>
                     {% endif %}
                 </div>
-
             {% else %}
                 <div class="text-box">
                     <p>No hay capítulos en esta obra.</p>
@@ -248,10 +291,12 @@
                     <a href="{% url 'ver_obra' obra.id %}" class="next-btn">Volver</a>
                 </div>
             {% endif %}
-
         </div>
 
-        <!-- Derecha: Comentarios (Mockup Visual) -->
+        <!-- 
+           COLUMNA DERECHA: Sidebar de Comentarios
+           (Actualmente es un mockup visual, no funcional con base de datos en esta versión)
+        -->
         <div class="comments-sidebar">
             <div class="comment-input-box">
                 <input type="text" placeholder="Escribe un Comentario...">
@@ -259,7 +304,7 @@
             </div>
 
             <div class="comment-list">
-                <!-- Mockup Comment 1 -->
+                <!-- Comentario 1 (Ejemplo estático) -->
                 <div class="comment-item">
                     <img src="{% static 'images/avatar_grande.png' %}" class="comment-avatar">
                     <div class="comment-content">
@@ -269,7 +314,7 @@
                     <div class="comment-dots">•••</div>
                 </div>
 
-                <!-- Mockup Comment 2 -->
+                <!-- Comentario 2 (Ejemplo estático) -->
                 <div class="comment-item">
                     <img src="{% static 'images/avatar_grande.png' %}" class="comment-avatar">
                     <div class="comment-content">
@@ -280,6 +325,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 </body>

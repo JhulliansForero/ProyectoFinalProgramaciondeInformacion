@@ -5,13 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escribir Contenido - BookMora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap');
-
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: #fafafa; }
 
-        /* Header Style (Matching Profile) */
+        /* header */
         .header-filas {
             background-color: #08042b;
             height: 60px;
@@ -21,34 +24,12 @@
             padding: 0 40px;
         }
 
-        .logo-area img {
-            height: 48px;
-            width: auto;
-            object-fit: contain;
-        }
-        
-        /* Nav Right */
-        .nav-area {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .nav-area a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 15px;
-            font-family: 'Playfair Display', serif;
-            font-weight: 400;
-        }
-        .nav-avatar img {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: 2px solid #5ba4cf;
-            object-fit: cover;
-        }
+        .logo-area img { height: 48px; width: auto; object-fit: contain; }
+        .nav-area { display: flex; align-items: center; gap: 20px; }
+        .nav-area a { color: #fff; text-decoration: none; font-size: 15px; font-family: 'Playfair Display', serif; font-weight: 400; }
+        .nav-avatar img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #5ba4cf; object-fit: cover; }
 
-        /* Secondary Toolbar */
+        /* Toolbar Secundaria */
         .secondary-toolbar {
             background-color: #f9f9f9;
             border-bottom: 1px solid #ddd;
@@ -59,85 +40,27 @@
             padding: 0 40px;
         }
 
-        .toolbar-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .toolbar-left { display: flex; align-items: center; gap: 15px; }
+        .mini-cover { width: 40px; height: 40px; border-radius: 4px; object-fit: cover; border: 1px solid #ccc; }
+        .chapter-title-dropdown { font-family: 'Playfair Display', serif; font-size: 16px; color: #333; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .arrow-down { font-size: 12px; color: #555; }
+        .publish-btn { background-color: #000099; color: white; border: none; padding: 8px 30px; border-radius: 20px; font-family: 'Playfair Display', serif; font-size: 14px; cursor: pointer; }
 
-        .mini-cover {
-            width: 40px;
-            height: 40px;
-            border-radius: 4px;
-            object-fit: cover;
-            border: 1px solid #ccc;
-        }
-
-        .chapter-title-dropdown {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .arrow-down {
-            font-size: 12px;
-            color: #555;
-        }
-
-        .publish-btn {
-            background-color: #000099; /* Dark blue button */
-            color: white;
-            border: none;
-            padding: 8px 30px;
-            border-radius: 20px;
-            font-family: 'Playfair Display', serif;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        /* Main Editor Area */
-        .editor-container {
-            max-width: 800px;
-            margin: 40px auto;
-            text-align: center;
-        }
-
-        .chapter-heading {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            color: #444;
-            margin-bottom: 20px;
-        }
-
-        .editor-box {
-            background-color: #f2f2f2;
-            width: 100%;
-            height: 500px; /* Large writing area */
-            border: none;
-            padding: 20px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            color: #333;
-            outline: none;
-            resize: none;
-        }
-
+        /* Área de Editor */
+        .editor-container { max-width: 800px; margin: 40px auto; text-align: center; }
+        .chapter-heading { font-family: 'Playfair Display', serif; font-size: 18px; color: #444; margin-bottom: 20px; }
+        .editor-box { background-color: #f2f2f2; width: 100%; height: 500px; border: none; padding: 20px; font-family: 'Poppins', sans-serif; font-size: 14px; color: #333; outline: none; resize: none; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Header Principal -->
     <header class="header-filas">
         <div class="logo-area">
             <a href="{% url 'dashboard' %}">
                 <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora">
             </a>
         </div>
-
         <nav class="nav-area">
             <a href="{% url 'perfil' %}">Mi Perfil</a>
             <div class="nav-avatar">
@@ -146,12 +69,18 @@
         </nav>
     </header>
 
-    <!-- Secondary Toolbar -->
+    <!-- 
+      FORMULARIO DE EDICIÓN DE CAPÍTULO
+      Este formulario engloba tanto la toolbar como el área de texto.
+      Permite guardar (publicar) el título y contenido del capítulo.
+    -->
     <form method="POST" action="">
         {% csrf_token %}
+        
+        <!-- Toolbar Secundaria: Info de Obra y Botón Publicar -->
         <div class="secondary-toolbar">
             <div class="toolbar-left">
-                <!-- Cover -->
+                <!-- Miniatura de Portada -->
                 {% if obra.imagen %}
                     <img src="{{ obra.imagen.url }}" class="mini-cover" alt="Cover">
                 {% elif obra.imagen_url %}
@@ -160,22 +89,27 @@
                     <img src="{% static 'images/avatar_grande.png' %}" class="mini-cover" alt="Cover">
                 {% endif %}
                 
+                <!-- Título Obra -->
                 <div class="chapter-title-dropdown">
                     {% if obra %} {{ obra.titulo }} {% else %} Parte 1 Sin Titulo {% endif %}
                     <span class="arrow-down">﹀</span>
                 </div>
             </div>
+            
+            <!-- Botón de Envío del Formulario -->
             <button type="submit" class="publish-btn">Publicar</button>
         </div>
 
-        <!-- Main Editor -->
+        <!-- Área Central de Escritura -->
         <div class="editor-container">
             <div class="chapter-heading">
-                <!-- Editable Chapter Title -->
+                <!-- Input Editable para el Título del Capítulo -->
                 <input type="text" name="titulo_capitulo" value="{{ capitulo.titulo|default:'Sin Titulo' }}" 
                        style="border: none; font-family: 'Playfair Display', serif; font-size: 24px; width: 100%; text-align: center; color: #333; outline: none; background: transparent;"
                        placeholder="Título del Capítulo">
             </div>
+            
+            <!-- Textarea para el Contenido de la Historia -->
             <textarea name="contenido" class="editor-box" placeholder="Escribe aquí tu historia...">{{ capitulo.contenido|default:'' }}</textarea>
         </div>
     </form>

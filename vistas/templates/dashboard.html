@@ -5,8 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookMora - Dashboard</title>
+    
+    <!-- Fuentes de Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    
     <style>
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * {
             margin: 0;
             padding: 0;
@@ -58,11 +64,6 @@
             border-radius: 5px;
             width: 250px;
             font-size: 14px;
-        }
-
-        .buscador span {
-            color: #666;
-            font-size: 12px;
         }
 
         .nav-header {
@@ -162,8 +163,12 @@
 </head>
 <body>
 
-    <!-- Header (Vista Privada - con avatar) -->
+    <!-- 
+      HEADER (VISTA PRIVADA)
+      Muestra el logo (con enlace al dashboard), buscador y acceso a funciones de usuario.
+    -->
     <header class="header">
+        <!-- Logotipo: Al hacer clic redirige al dashboard -->
         <div class="logo-header">
             <a href="{% url 'dashboard' %}" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
                 <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
@@ -171,17 +176,38 @@
             </a>
         </div>
 
-        <div class="buscador">
-            <input type="text" placeholder="Buscar">
-        </div>
+        <!-- 
+          BARRA DE BÚSQUEDA
+          Permite buscar libros por título, descripción o autor.
+        -->
+        <form class="buscador" method="GET" action="{% url 'buscar' %}">
+            <input type="text" name="q" list="libros-sugerencias" placeholder="Buscar">
+            <datalist id="libros-sugerencias">
+                <option value="El Susurro de las Runas">
+                <option value="Crónicas de Sombras">
+                <option value="La Canción de Leviatán">
+                <option value="Forjados en Bruma">
+                <option value="El Último Ocaso de Eterna">
+            </datalist>
+            <button type="submit" style="display:none;"></button>
+        </form>
 
+        <!-- 
+          NAVEGACIÓN DE USUARIO
+          Accesos directos para publicar una nueva obra y ver el perfil del usuario.
+        -->
         <nav class="nav-header">
+            <!-- Enlace a la vista de creación de obras -->
             <a href="{% url 'publicar' %}">Escribir ▾</a>
+            <!-- Enlace al perfil del usuario, representado por su avatar -->
             <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_usuario.png' %}" alt="Perfil" class="avatar-usuario"></a>
         </nav>
     </header>
 
-    <!-- Hero -->
+    <!-- 
+      HERO SECTION
+      Bienvenida visual para el usuario logueado.
+    -->
     <section class="hero">
         <div class="hero-text">
             <h1>Conecta con el autor.<br>Vive la historia.</h1>
@@ -191,7 +217,10 @@
         </div>
     </section>
 
-    <!-- Lo más Popular -->
+    <!-- 
+      SECCIÓN: LO MÁS POPULAR
+      Muestra contenido relevante de la plataforma.
+    -->
     <section class="seccion">
         <h2>Lo mas Popular</h2>
         <div class="portadas-img">
@@ -199,7 +228,10 @@
         </div>
     </section>
 
-    <!-- Diversidad de Historias -->
+    <!-- 
+      SECCIÓN: CATEGORÍAS
+      Navegación visual por géneros.
+    -->
     <section class="seccion">
         <h2>Diversidad De Historias.</h2>
         <div class="categorias-img">
@@ -207,7 +239,10 @@
         </div>
     </section>
 
-    <!-- Fandom -->
+    <!-- 
+      SECCIÓN: FANDOM
+      Banner de comunidad.
+    -->
     <section class="fandom">
         <div class="fandom-image">
             <img src="{% static 'images/personas_leyendo.png' %}" alt="Personas leyendo">

@@ -5,13 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ obra.titulo }} - BookMora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Poppins:wght@300;400;500;600&display=swap');
-
+        /* =========================================
+           ESTILOS GENERALES
+           ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: #fff; }
 
-        /* HEADER (Copied from Perfil) */
+        /* =========================================
+           HEADER
+           ========================================= */
         .header-filas {
             background-color: #08042b;
             height: 60px;
@@ -20,19 +25,23 @@
             justify-content: space-between;
             padding: 0 40px;
         }
+
         .logo-area a { display: flex; align-items: center; }
+
         .nav-area {
             display: flex;
             align-items: center;
             justify-content: flex-end;
             gap: 20px;
         }
+
         .nav-area a {
             color: #fff;
             text-decoration: none;
             font-size: 15px;
             font-family: 'Playfair Display', serif;
         }
+
         .nav-avatar img {
             width: 38px;
             height: 38px;
@@ -40,7 +49,9 @@
             border: 2px solid #5ba4cf;
         }
 
-        /* MAIN CONTAINER */
+        /* =========================================
+           CONTENEDOR PRINCIPAL
+           ========================================= */
         .detail-container {
             max-width: 1000px;
             margin: 50px auto;
@@ -50,16 +61,15 @@
             gap: 50px;
         }
 
-        /* COVER */
+        /* Portada */
         .cover-area img {
             width: 100%;
             box-shadow: 2px 4px 15px rgba(0,0,0,0.15);
-            /* Aspect ratio approx 2:3 */
             aspect-ratio: 2/3; 
             object-fit: cover;
         }
 
-        /* INFO RIGHT */
+        /* Área de Información */
         .info-area {
             padding-top: 10px;
         }
@@ -82,10 +92,11 @@
             align-items: center;
             gap: 15px;
         }
+
         .meta-item { display: flex; align-items: center; gap: 5px; }
 
         .start-reading-btn {
-            background-color: #08042b; /* Deep blue similar to header */
+            background-color: #08042b;
             color: white;
             padding: 12px 50px;
             border-radius: 25px;
@@ -94,6 +105,7 @@
             font-size: 16px;
             display: inline-block;
             margin-bottom: 30px;
+            transition: background-color 0.3s;
         }
         .start-reading-btn:hover { background-color: #1a1444; }
 
@@ -115,6 +127,7 @@
             color: #333;
         }
 
+        /* Etiquetas */
         .tags-row {
             display: flex;
             gap: 10px;
@@ -130,10 +143,10 @@
             color: #333;
         }
 
-        /* BOTTOM GRID (Description vs TOC) */
+        /* Grid Inferior (Descripción e Índice) */
         .bottom-grid {
             display: grid;
-            grid-template-columns: 3fr 2fr; /* More space for description */
+            grid-template-columns: 3fr 2fr;
             gap: 50px;
             border-top: 1px solid #eee;
             padding-top: 30px;
@@ -167,12 +180,14 @@
             color: #333;
             border-radius: 4px;
         }
-
     </style>
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- 
+      HEADER
+      Navegación superior con acceso al dashboard y perfil.
+    -->
     <header class="header-filas">
         <div class="logo-area">
             <a href="{% url 'dashboard' %}">
@@ -187,50 +202,62 @@
         </nav>
     </header>
 
+    <!--
+      CONTENEDOR DE DETALLES DE LA OBRA
+      Diseño de dos columnas: Portada (Izquierda) e Información (Derecha).
+    -->
     <div class="detail-container">
-        <!-- Col Left: Cover -->
+        
+        <!-- COLUMNA IZQUIERDA: Portada del libro -->
         <div class="cover-area">
             {% if obra.imagen %}
+                <!-- Muestra imagen subida si existe -->
                 <img src="{{ obra.imagen.url }}" alt="Portada">
             {% elif obra.imagen_url %}
+                 <!-- Muestra imagen desde URL externa si existe -->
                 <img src="{{ obra.imagen_url }}" alt="Portada">
             {% else %}
+                 <!-- Placeholder si no hay imagen -->
                 <div style="width: 100%; height: 400px; background-color: #eee; display:flex; align-items:center; justify-content:center;">Sin Portada</div>
             {% endif %}
         </div>
 
-        <!-- Col Right: Details -->
+        <!-- COLUMNA DERECHA: Título, Autor, Sinopsis y Capítulos -->
         <div class="info-area">
+            
+            <!-- Título del Libro -->
             <h1 class="book-title-large">{{ obra.titulo }}</h1>
             
+            <!-- Metadatos: Número de partes -->
             <div class="book-meta-large">
                 <div class="meta-item">
                     <span style="font-weight: bold;">☰</span>
                     <span>Partes {{ obra.num_capitulos }}</span>
                 </div>
-                 <div class="meta-item">
-                    <!-- Placeholder reading time/stats -->
-                </div>
             </div>
 
+            <!-- Botón para iniciar lectura (lleva al primer capítulo o selector) -->
             <a href="{% url 'leer_capitulo_inicio' obra.id %}" class="start-reading-btn">Empezar a leer</a>
 
+            <!-- Información del Autor -->
             <div class="author-row">
                 <img src="{% static 'images/avatar_grande.png' %}" class="mini-avatar" alt="Author">
                 <span class="author-name">{{ obra.autor.username|default:"Usuario" }}</span>
             </div>
 
+            <!-- Etiquetas y Categorías -->
             <div class="tags-row">
                 {% if obra.categoria %}
                     <span class="tag-pill">{{ obra.categoria }}</span>
                 {% endif %}
-                <!-- Etiquetas logic: parse string by comma if simple -->
+                <!-- Se asume que 'etiquetas' es una cadena de texto -->
                 <span class="tag-pill">{{ obra.etiquetas }}</span>
             </div>
 
-            <!-- Content Split -->
+            <!-- Grid Inferior: Divide Descripción y Tabla de Contenidos -->
             <div class="bottom-grid">
-                <!-- Description -->
+                
+                <!-- Descripción / Sinopsis -->
                 <div class="description-box">
                     {% if obra.descripcion %}
                         {{ obra.descripcion|linebreaks }}
@@ -239,7 +266,7 @@
                     {% endif %}
                 </div>
 
-                <!-- TOC -->
+                <!-- Tabla de Contenidos (Lista de Capítulos) -->
                 <div class="toc-box">
                     <div class="toc-header">Tabla de Contenidos</div>
                     <div class="chapter-list">
