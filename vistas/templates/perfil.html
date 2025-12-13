@@ -5,339 +5,325 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - BookMora</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        /* =========================================
-           ESTILOS GENERALES
-           ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background-color: #fafafa; }
+        body { font-family: 'Poppins', sans-serif; background-color: #fff; }
 
-        /* =========================================
-           HEADER
-           ========================================= */
-        .header-filas {
-            background-color: #08042b;
-            height: 60px;
+        /* HEADER AZUL OSCURO */
+        .header {
+            background-color: #0f1a3d;
+            height: 55px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
+            padding: 0 25px;
+            gap: 20px;
         }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
+        .logo-area img { 
+            height: 45px; 
         }
-
+        .search-bar {
+            flex: 1;
+            max-width: 450px;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 8px 12px 8px 35px;
+            border: none;
+            border-radius: 3px;
+            font-size: 13px;
+            background: #fff;
+        }
+        .search-bar img {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+        }
         .nav-area {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
+            margin-left: auto;
         }
         .nav-area a {
             color: #fff;
             text-decoration: none;
-            font-size: 15px;
-            font-family: 'Playfair Display', serif;
-            font-weight: 400;
+            font-size: 14px;
         }
         .nav-avatar img {
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            border: 2px solid #5ba4cf;
             object-fit: cover;
         }
 
-        /* =========================================
-           PERFIL HERO
-           ========================================= */
+        /* HERO AZUL CLARO */
         .profile-hero {
-            background-color: #f4f4f4;
-            padding: 40px 0;
+            background: linear-gradient(180deg, #b8d4e8 0%, #d6e8f2 100%);
+            padding: 20px 50px 25px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            align-items: flex-start;
+            position: relative;
+            min-height: 160px;
         }
-
-        .profile-content {
+        .stats-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
+            gap: 40px;
+            position: absolute;
+            left: 50px;
+            top: 20px;
         }
-
-        .profile-avatar-large {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .profile-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 600;
-            color: #222;
-        }
-        
-        .profile-username {
-            font-size: 16px;
-            color: #666;
-            margin-top: -10px;
-        }
-
-        .profile-stats {
-            display: flex;
-            gap: 30px;
-            margin-top: 10px;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        .stat-number {
-            display: block;
-            font-weight: 600;
-            font-size: 18px;
-            color: #333;
+        .stat-box {
+            text-align: left;
         }
         .stat-label {
-            font-size: 12px;
-            color: #777;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .edit-profile-btn {
-            margin-top: 10px;
-            padding: 8px 25px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            background: #fff;
-            color: #333;
             font-size: 13px;
-            text-decoration: none;
-            transition: all 0.3s;
+            color: #333;
+            margin-bottom: 2px;
         }
-        .edit-profile-btn:hover { background: #eee; }
-
-        /* =========================================
-           LISTA DE OBRAS
-           ========================================= */
-        .works-section {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .stat-number {
+            font-size: 14px;
+            color: #4a90c2;
+            font-weight: 500;
+        }
+        .profile-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            top: 15px;
+        }
+        .profile-avatar {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: 4px solid #1a3a5c;
+            object-fit: cover;
+            box-shadow: 0 0 0 3px #4a7ba7;
+        }
+        .profile-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            color: #1a3a5c;
+            margin-top: 8px;
+            font-weight: 400;
         }
 
-        .works-header {
+        /* BARRA OBRAS */
+        .obras-bar {
+            background-color: #f8f8f8;
+            padding: 12px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
         }
-
-        .works-title {
+        .obras-title {
             font-family: 'Playfair Display', serif;
             font-size: 20px;
-            padding: 10px 0;
-            border-bottom: 2px solid #333;
-            margin-bottom: -2px;
+            font-style: italic;
+            color: #1a3a5c;
+            font-weight: 400;
         }
-
-        .new-work-btn {
-            background-color: #08042b;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        /* Tarjeta de Obra */
-        .work-card {
+        .edit-perfil-link {
             display: flex;
-            gap: 20px;
-            background: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .work-cover {
-            width: 100px;
-            height: 150px;
-            object-fit: cover;
-            background-color: #ddd;
-            border-radius: 4px;
-        }
-
-        .work-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .work-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            font-weight: 600;
+            align-items: center;
+            gap: 8px;
             color: #333;
             text-decoration: none;
-            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        .edit-perfil-link img {
+            width: 18px;
+            height: 18px;
+        }
+        .edit-perfil-link:hover { opacity: 0.7; }
+
+        /* LISTA DE OBRAS */
+        .works-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 25px 30px;
+        }
+        .work-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 25px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .work-cover {
+            width: 85px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 3px;
+            background: #ddd;
+            flex-shrink: 0;
+        }
+        .work-info {
+            flex: 1;
+            padding-top: 5px;
+        }
+        .work-title-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            text-decoration: none;
+            margin-bottom: 6px;
             display: block;
         }
-
+        .work-title-text:hover { color: #1a3a5c; }
         .work-meta {
-            font-size: 13px;
-            color: #777;
-            margin-bottom: 10px;
             display: flex;
-            gap: 15px;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
         }
-
-        .work-desc {
-            font-size: 14px;
-            color: #555;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .work-meta img {
+            width: 14px;
+            height: 14px;
         }
-
+        .work-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background: #ececec;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #444;
+        }
         .work-actions {
             display: flex;
             gap: 15px;
-            margin-top: 15px;
+            align-items: flex-start;
+            padding-top: 5px;
         }
-        .action-link {
-            font-size: 13px;
-            color: #5ba4cf;
-            text-decoration: none;
+        .action-btn {
+            width: 22px;
+            height: 22px;
+            opacity: 0.7;
         }
-        .action-link.delete { color: #e74c3c; }
+        .action-btn:hover { opacity: 1; }
 
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #888;
+        }
+        .empty-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: #0f1a3d;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- 
-      HEADER
-      Navegación con acceso al dashboard y link a publicar obra.
-    -->
-    <header class="header-filas">
+    <header class="header">
         <div class="logo-area">
             <a href="{% url 'dashboard' %}">
-                <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
+                <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora">
             </a>
         </div>
-
+        <div class="search-bar">
+            <form action="{% url 'buscar' %}" method="GET">
+                <img src="{% static 'images/icon_search.png' %}" alt="Buscar">
+                <input type="text" name="q" placeholder="Busca">
+            </form>
+        </div>
         <nav class="nav-area">
-            <a href="{% url 'publicar' %}">Escribir</a>
-            <!-- El avatar también sirve de enlace para recargar el perfil -->
+            <a href="{% url 'publicar' %}">Publicar</a>
+            <a href="{% url 'perfil' %}">Mi Perfil</a>
             <div class="nav-avatar">
                 <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
             </div>
         </nav>
     </header>
 
-    <!-- 
-      SECCIÓN DE PERFIL (HERO)
-      Muestra la información pública del usuario: Avatar, Nombre, Estadísticas.
-    -->
     <div class="profile-hero">
-        <div class="profile-content">
-            <!-- Avatar del Usuario (Estático por ahora) -->
-            <img src="{% static 'images/avatar_grande.png' %}" class="profile-avatar-large" alt="Avatar">
-            
-            <!-- Nombre y Username -->
-            <div class="text-center">
-                <h1 class="profile-name">{{ usuario_actual.username|default:"Usuario" }}</h1>
-                <p class="profile-username">@{{ usuario_actual.username|lower }}</p>
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-label">Obras</div>
+                <div class="stat-number">{{ obras|length }}</div>
             </div>
-
-            <!-- Estadísticas de publicación -->
-            <div class="profile-stats">
-                <div class="stat-item">
-                    <span class="stat-number">{{ obras|length }}</span>
-                    <span class="stat-label">Obras</span>
-                </div>
-                <div class="stat-item">
-                    <!-- Placeholder para seguidores (funcionalidad futura) -->
-                    <span class="stat-number">0</span>
-                    <span class="stat-label">Seguidores</span>
-                </div>
+            <div class="stat-box">
+                <div class="stat-label">Lista de Lectura</div>
+                <div class="stat-number">5</div>
             </div>
-
-            <!-- Botón para editar información del usuario -->
-            <a href="{% url 'editar_usuario' usuario_actual.id %}" class="edit-profile-btn">Editar Perfil</a>
+        </div>
+        <div class="profile-center">
+            <img src="{% static 'images/avatar_grande.png' %}" class="profile-avatar" alt="Avatar">
+            <h1 class="profile-name">{{ usuario.username|default:"Usuario1" }}</h1>
         </div>
     </div>
 
-    <!-- 
-      SECCIÓN DE OBRAS
-      Lista todas las obras creadas por el usuario actual.
-    -->
-    <div class="works-section">
-        <div class="works-header">
-            <div class="works-title">Mis Obras</div>
-            <a href="{% url 'publicar' %}" class="new-work-btn">Nueva Historia</a>
-        </div>
+    <div class="obras-bar">
+        <h2 class="obras-title">Obras</h2>
+        {% if usuario %}
+        <a href="{% url 'editar_usuario' usuario.id %}" class="edit-perfil-link">
+            <img src="{% static 'images/icon_gear.png' %}" alt="Configuración">
+            Edita tu Perfil
+        </a>
+        {% endif %}
+    </div>
 
-        <div class="works-list">
-            {% for obra in obras %}
-                <!-- Tarjeta Individual de Obra -->
-                <div class="work-card">
-                    <!-- Portada -->
-                    {% if obra.imagen %}
-                        <img src="{{ obra.imagen.url }}" class="work-cover" alt="Cover">
-                    {% elif obra.imagen_url %}
-                        <img src="{{ obra.imagen_url }}" class="work-cover" alt="Cover">
-                    {% else %}
-                        <div class="work-cover" style="display:flex;align-items:center;justify-content:center;color:#666;font-size:12px;">Sin Portada</div>
+    <div class="works-container">
+        {% for obra in obras %}
+        <div class="work-card">
+            {% if obra.imagen %}
+                <img src="{{ obra.imagen.url }}" class="work-cover" alt="Portada">
+            {% elif obra.imagen_url %}
+                <img src="{{ obra.imagen_url }}" class="work-cover" alt="Portada">
+            {% else %}
+                <div class="work-cover" style="display:flex;align-items:center;justify-content:center;color:#999;font-size:10px;">Portada</div>
+            {% endif %}
+
+            <div class="work-info">
+                <a href="{% url 'ver_obra' obra.id %}" class="work-title-text">{{ obra.titulo }}</a>
+                <div class="work-meta">
+                    <img src="{% static 'images/icon_menu.png' %}" alt="">
+                    <span>{{ obra.capitulo_set.count }} Partes</span>
+                </div>
+                <div class="work-tags">
+                    {% if obra.etiquetas %}
+                        {% for tag in obra.etiquetas.split %}
+                        <span class="tag">{{ tag }}</span>
+                        {% endfor %}
                     {% endif %}
+                    <span class="tag">{{ obra.categoria|default:"General" }}</span>
+                </div>
+            </div>
 
-                    <!-- Información de la Obra -->
-                    <div class="work-info">
-                        <div>
-                            <a href="{% url 'ver_obra' obra.id %}" class="work-title">{{ obra.titulo }}</a>
-                            <div class="work-meta">
-                                <span>{{ obra.categoria|default:"Sin Categoría" }}</span>
-                                <span>•</span>
-                                <!-- Conteo de capítulos/partes -->
-                                <span>{{ obra.capitulo_set.count }} Partes</span>
-                            </div>
-                            <p class="work-desc">{{ obra.descripcion|default:"Sin descripción." }}</p>
-                        </div>
-                        
-                        <!-- Acciones: Continuar escribiendo, Editar, Eliminar -->
-                        <div class="work-actions">
-                            <a href="{% url 'tabla_contenidos' obra.id %}" class="action-link" style="font-weight:600;">Continuar Escribiendo</a>
-                            <a href="{% url 'editar_obra' obra.id %}" class="action-link">Editar Información</a>
-                            <a href="{% url 'eliminar_obra' obra.id %}" class="action-link delete" onclick="return confirm('¿Estás seguro de eliminar esta obra?');">Eliminar</a>
-                        </div>
-                    </div>
-                </div>
-            {% empty %}
-                <!-- Estado Vacío -->
-                <div style="text-align: center; padding: 40px; color: #666;">
-                    <p>Aún no has publicado ninguna obra.</p>
-                    <br>
-                    <a href="{% url 'publicar' %}" class="new-work-btn" style="background:#ddd; color:#333;">Empieza a escribir</a>
-                </div>
-            {% endfor %}
+            <div class="work-actions">
+                <a href="{% url 'editar_obra' obra.id %}" title="Editar">
+                    <img src="{% static 'images/icon_edit.png' %}" class="action-btn" alt="Editar">
+                </a>
+                <a href="{% url 'eliminar_obra' obra.id %}" title="Eliminar" onclick="return confirm('¿Eliminar esta obra?');">
+                    <img src="{% static 'images/icon_delete.png' %}" class="action-btn" alt="Eliminar">
+                </a>
+            </div>
         </div>
+        {% empty %}
+        <div class="empty-state">
+            <p>Aún no has publicado ninguna obra.</p>
+            <a href="{% url 'publicar' %}" class="empty-btn">Empieza a escribir</a>
+        </div>
+        {% endfor %}
     </div>
 
 </body>
