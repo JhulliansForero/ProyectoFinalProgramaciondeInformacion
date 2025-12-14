@@ -332,32 +332,3 @@ def leer_capitulo(request, obra_id, capitulo_id=None):
     })
 
 
-# ==============================================================================
-# GESTIÓN DE USUARIOS (Admin simple)
-# ==============================================================================
-
-def lista_usuarios(request):
-    """Listado de todos los usuarios registrados."""
-    usuarios = Practica.objects.all()
-    return render(request, "lista_usuarios.html", {'usuarios': usuarios})
-
-
-def eliminar_usuario(request, usuario_id):
-    """Elimina un usuario por ID."""
-    usuario = Practica.objects.get(id=usuario_id)
-    usuario.delete()
-    return redirect("lista_usuarios")
-
-
-def editar_usuario(request, usuario_id):
-    """Edita datos de un usuario."""
-    usuario = Practica.objects.get(id=usuario_id)
-    
-    if request.method == "POST":
-        usuario.username = request.POST.get("username")
-        usuario.email = request.POST.get("email")
-        usuario.password = request.POST.get("password")
-        usuario.save()
-        return redirect("lista_usuarios")
-    
-    return render(request, "editar_usuario.html", {'usuario': usuario})

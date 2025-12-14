@@ -274,12 +274,10 @@
 
     <div class="obras-bar">
         <h2 class="obras-title">Obras</h2>
-        {% if usuario %}
-        <a href="{% url 'editar_usuario' usuario.id %}" class="edit-perfil-link">
+        <span class="edit-perfil-link" style="cursor: default;">
             <img src="{% static 'images/icon_gear.png' %}" alt="Configuración">
             Edita tu Perfil
-        </a>
-        {% endif %}
+        </span>
     </div>
 
     <div class="works-container">
