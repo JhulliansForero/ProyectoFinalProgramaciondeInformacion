@@ -64,13 +64,31 @@
 <body>
 
     <!-- Header Normal -->
+    <!-- Header -->
     <header class="header">
         <div class="logo-header">
-            <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
-            <span>BookMora</span>
+            {% if usuario_logueado %}
+                <a href="{% url 'dashboard' %}" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                    <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora">
+                    <span>BookMora</span>
+                </a>
+            {% else %}
+                <a href="{% url 'inicio' %}" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                    <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora">
+                    <span>BookMora</span>
+                </a>
+            {% endif %}
         </div>
         <nav class="nav-header">
-            <a href="{% url 'inicio' %}">Inicio</a>
+            {% if usuario_logueado %}
+                <a href="{% url 'publicar' %}">Escribir</a>
+                <a href="{% url 'perfil' %}">Mi Perfil</a>
+
+            {% else %}
+                <a href="{% url 'inicio' %}">Inicio</a>
+                <a href="{% url 'formulario' %}">Registrate</a>
+                <a href="{% url 'login' %}">Iniciar Sesión</a>
+            {% endif %}
         </nav>
     </header>
 

@@ -190,15 +190,28 @@
     -->
     <header class="header-filas">
         <div class="logo-area">
+            {% if usuario_logueado %}
             <a href="{% url 'dashboard' %}">
                 <img src="{% static 'images/logo_final_perfil.png' %}" alt="BookMora" style="height: 48px; width: auto; object-fit: contain;">
             </a>
+            {% else %}
+            <a href="{% url 'inicio' %}" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                <img src="{% static 'images/logo_bookmora.png' %}" alt="BookMora" style="height: 40px;">
+                <span style="color: #fff; font-family: 'Playfair Display', serif; font-size: 18px; margin-left:10px;">BookMora</span>
+            </a>
+            {% endif %}
         </div>
         <nav class="nav-area">
-            <a href="{% url 'perfil' %}">Mi Perfil</a>
-            <div class="nav-avatar">
-                <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
-            </div>
+            {% if usuario_logueado %}
+                <a href="{% url 'perfil' %}">Mi Perfil</a>
+                <div class="nav-avatar">
+                   <a href="{% url 'perfil' %}"><img src="{% static 'images/avatar_grande.png' %}" alt="Perfil"></a>
+                </div>
+            {% else %}
+                <a href="{% url 'inicio' %}">Inicio</a>
+                <a href="{% url 'formulario' %}">Registrate</a>
+                <a href="{% url 'login' %}">Iniciar Sesión</a>
+            {% endif %}
         </nav>
     </header>
 

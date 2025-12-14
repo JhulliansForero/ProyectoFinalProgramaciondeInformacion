@@ -18,6 +18,7 @@ urlpatterns = [
     # --------------------------------------------------
     path('formulario/', views.formulario, name="formulario"), # Registro
     path('login/', views.login, name="login"),                # Inicio de sesión
+    path('logout/', views.logout, name="logout"),             # Cerrar sesión
     path('dashboard/', views.dashboard, name="dashboard"),    # Home privado
     path('perfil/', views.perfil, name="perfil"),             # Perfil de usuario
 

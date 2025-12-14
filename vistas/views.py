@@ -35,7 +35,8 @@ def buscar(request):
     # Renderiza la página de resultados con las obras encontradas
     return render(request, 'resultados_busqueda.html', {
         'query': query,
-        'resultados': resultados
+        'resultados': resultados,
+        'usuario_logueado': request.session.get('usuario_id') is not None
     })
 
 
@@ -69,6 +70,14 @@ def login(request):
     
     # Si es GET, mostramos el formulario de login
     return render(request, 'login.html')
+
+
+def logout(request):
+    """
+    Cierra la sesión del usuario.
+    """
+    request.session.flush() # Elimina todos los datos de sesión (id usuario)
+    return redirect('inicio')
 
 
 def formulario(request):
@@ -143,7 +152,7 @@ def publicar(request):
         # Recogida de datos del formulario
         titulo = request.POST.get("titulo")
         descripcion = request.POST.get("descripcion")
-        categoria = request.POST.get("categoria")
+        categoria = request.POST.get("categoria") or "General" # Default fallback
         imagen = request.FILES.get("imagen")
         imagen_url = request.POST.get("imagen_url")
         
@@ -151,7 +160,11 @@ def publicar(request):
         personajes = ", ".join(request.POST.getlist("personajes") or [])
         etiquetas = ", ".join(request.POST.getlist("etiquetas") or [])
         
-        autor = Practica.objects.get(id=usuario_id)
+        try:
+            autor = Practica.objects.get(id=usuario_id)
+        except Practica.DoesNotExist:
+            request.session.flush()
+            return redirect('login')
         
         # Crear la obra en BD
         obra = Obra.objects.create(
@@ -181,7 +194,12 @@ def editar_obra(request, obra_id):
     if request.method == "POST":
         obra.titulo = request.POST.get("titulo")
         obra.descripcion = request.POST.get("descripcion")
-        obra.categoria = request.POST.get("categoria")
+        # Si no se selecciona categoría, mantenemos la anterior o usamos "General"
+        nueva_categoria = request.POST.get("categoria")
+        if nueva_categoria:
+            obra.categoria = nueva_categoria
+        elif not obra.categoria:
+            obra.categoria = "General"
         
         obra.personajes = ", ".join(request.POST.getlist("personajes") or [])
         obra.etiquetas = ", ".join(request.POST.getlist("etiquetas") or [])
@@ -297,7 +315,8 @@ def ver_obra(request, obra_id):
     return render(request, 'ver_obra.html', {
         'obra': obra, 
         'capitulos': capitulos,
-        'es_autor': es_autor
+        'es_autor': es_autor,
+        'usuario_logueado': request.session.get('usuario_id') is not None
     })
 
 
@@ -328,7 +347,8 @@ def leer_capitulo(request, obra_id, capitulo_id=None):
     return render(request, 'leer_capitulo.html', {
         'obra': obra,
         'capitulo': capitulo,
-        'siguiente_capitulo': siguiente_capitulo
+        'siguiente_capitulo': siguiente_capitulo,
+        'usuario_logueado': request.session.get('usuario_id') is not None
     })
 
 
